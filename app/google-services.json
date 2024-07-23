@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "837057154434",
+    "project_id": "coffee-go-1207",
+    "storage_bucket": "coffee-go-1207.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:837057154434:android:c3946b73fce098f104139b",
+        "android_client_info": {
+          "package_name": "com.huyhieu.coffee_go"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfawM85WR3xjVylgQdom86EPJbPNZI6e0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
