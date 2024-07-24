@@ -2,6 +2,7 @@ package com.huyhieu.coffee_go.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.huyhieu.coffee_go.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,10 +18,10 @@ class HomeVM @Inject constructor() : ViewModel() {
 
     private val _homeUiState = MutableStateFlow(HomeUiState())
     val homeUiState = _homeUiState.asStateFlow().stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = _homeUiState.value
-        )
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = _homeUiState.value
+    )
 
 
     init {
@@ -42,6 +43,37 @@ class HomeVM @Inject constructor() : ViewModel() {
                         greetings = "Good morning!",
                         name = "Cristiano Ronaldo",
                         isBadgeVisible = true
+                    )
+                )
+            }
+            delay(1000)
+            _homeUiState.update {
+                it.copy(
+                    banners = listOf(
+                        Banner(
+                            id = "1",
+                            bannerRes = R.drawable.coffee_banner
+                        ),
+                        Banner(
+                            id = "2",
+                            bannerRes = R.drawable.coffee_banner
+                        ),
+                        Banner(
+                            id = "3",
+                            bannerRes = R.drawable.coffee_banner
+                        ),
+                        Banner(
+                            id = "4",
+                            bannerRes = R.drawable.coffee_banner
+                        ),
+                        Banner(
+                            id = "5",
+                            bannerRes = R.drawable.coffee_banner
+                        ),
+                        Banner(
+                            id = "6",
+                            bannerRes = R.drawable.coffee_banner
+                        ),
                     )
                 )
             }

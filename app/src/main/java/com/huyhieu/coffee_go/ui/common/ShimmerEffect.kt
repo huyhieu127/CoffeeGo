@@ -28,13 +28,14 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ShimmerEffectItem(
+fun ShimmerEffect(
     isLoading: Boolean,
     modifier: Modifier = Modifier,
+    contentLoading: @Composable (() -> Unit)? = null,
     contentAfterLoading: @Composable () -> Unit = {}
 ) {
     if (isLoading) {
-        Row(modifier = modifier) {
+        contentLoading?.invoke() ?: Row(modifier = modifier) {
             Box(
                 modifier = Modifier
                     .size(50.dp)

@@ -16,7 +16,8 @@ data class Toolbar(
 )
 
 data class Banner(
-    val url: String = "",
+    val bannerUrl: String = "",
+    val bannerRes: Int = 0,
     val id: String = "",
     val type: String = "",
 )

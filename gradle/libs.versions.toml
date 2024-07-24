@@ -18,6 +18,7 @@ composeBom = "2024.06.00"
 navigationCompose = "2.7.7"
 appcompat = "1.7.0"
 material = "1.12.0"
+foundation = "1.7.0-beta05"
 
 googleServices = "4.4.2"
 firebaseCrashlytics = "3.0.2"
@@ -30,10 +31,10 @@ hiltNavigationCompose = "1.2.0"
 okhttp = "5.0.0-alpha.11"
 retrofit = "2.9.0"
 
-kotlinxCoroutinesAndroid = "1.7.3"
-kotlinxCoroutinesCore = "1.7.1"
+kotlinxCoroutinesAndroid = "1.8.1"
+kotlinxCoroutinesCore = "1.8.1"
 
-coil = "2.6.0"
+coil = "2.7.0"
 lottie = "6.4.0"
 firebaseCrashlyticsVersion = "19.0.3"
 material3Android = "1.2.1"
@@ -65,6 +66,7 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "foundation" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
