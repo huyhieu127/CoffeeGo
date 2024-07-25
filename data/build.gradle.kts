@@ -13,6 +13,8 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField("String", "FAKE_COFFEE_API", "\"https://fake-coffee-api.vercel.app/\"")
     }
 
     buildTypes {

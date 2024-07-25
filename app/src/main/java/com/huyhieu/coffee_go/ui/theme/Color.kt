@@ -2,6 +2,8 @@ package com.huyhieu.coffee_go.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+fun Color.alpha(alpha: Float) = copy(alpha = alpha)
+
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)
 val Pink80 = Color(0xFFEFB8C8)
@@ -22,3 +24,5 @@ val TextBlack = Color(0xFF000000)
 
 val Primary = Color(0xFF00E676)
 val PrimaryLight = Color(0xFFE8F5E9)
+
+val BlackOpacity10 = Color(0x1A000000)

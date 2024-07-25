@@ -36,9 +36,11 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.huyhieu.coffee_go.R
 import com.huyhieu.coffee_go.ui.common.button.clickableNoneRipple
+import com.huyhieu.coffee_go.ui.theme.BlackOpacity10
 import com.huyhieu.coffee_go.ui.theme.Primary
 import com.huyhieu.coffee_go.ui.theme.PrimaryLight
 import com.huyhieu.coffee_go.ui.theme.actionBarSize
+import com.huyhieu.coffee_go.ui.theme.alpha
 import com.huyhieu.coffee_go.ui.theme.cornerSize
 import com.huyhieu.coffee_go.ui.theme.edgeSize
 import com.huyhieu.coffee_go.ui.theme.utils.type.FontStyle
@@ -64,10 +66,8 @@ fun BannerUi(
     banners: List<Banner> = emptyList(), onActionBannerClick: (Banner) -> Unit = {}
 ) {
     if (banners.isNotEmpty()) {
-        val pagerState = rememberPagerState(
-            initialPage = banners.getInitialPage(),
-            pageCount = { Int.MAX_VALUE }
-        )
+        val pagerState = rememberPagerState(initialPage = banners.getInitialPage(),
+            pageCount = { Int.MAX_VALUE })
 
         LaunchedEffect(pagerState.settledPage) {
             delay(3000)
@@ -108,37 +108,32 @@ fun BannerUi(
                     }
                 }
             }
-            banners.getOrNull(
-                pagerState.currentPage % banners.size
-            )?.let { banner ->
-                Text(
-                    modifier = Modifier.align(Alignment.Center),
-                    text = banner.id,
-                    color = Color.White,
-                    style = FontStyle.Bold.size(42.sp),
-                )
-            }
-            Row(
-                Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 12.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                runCatching {
-                    repeat(banners.size) { iteration ->
-                        val isCurrent = (pagerState.currentPage % banners.size) == iteration
-                        val color = if (isCurrent) Primary else PrimaryLight
-                        val width = if (isCurrent) 20.dp else 8.dp
-                        Box(
-                            modifier = Modifier
-                                .padding(horizontal = 4.dp)
-                                .clip(CircleShape)
-                                .background(color)
-                                .width(width)
-                                .height(8.dp)
-                        )
+            if (banners.size > 1) {
+                Row(
+                    Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(vertical = 4.dp)
+                        .background(BlackOpacity10, RoundedCornerShape(50))
+                        .padding(3.dp),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    runCatching {
+                        repeat(banners.size) { iteration ->
+                            val isCurrent = (pagerState.currentPage % banners.size) == iteration
+                            val color = if (isCurrent) Primary else PrimaryLight.alpha(0.5F)
+                            val width = if (isCurrent) 16.dp else 6.dp
+                            Box(
+                                modifier = Modifier
+                                    .padding(horizontal = 4.dp)
+                                    .clip(CircleShape)
+                                    .background(color)
+                                    .width(width)
+                                    .height(6.dp)
+                            )
+                        }
                     }
                 }
+
             }
 
         }

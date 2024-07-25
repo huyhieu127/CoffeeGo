@@ -1,6 +1,6 @@
 package com.huyhieu.data.mapper
 
-import com.huyhieu.domain.entity.response.ResponseState
+import com.huyhieu.domain.common.ResponseState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow

@@ -1,4 +1,4 @@
-package com.huyhieu.domain.entity.response
+package com.huyhieu.domain.common
 
 sealed class ResponseState<T> {
     class Loading<T> : ResponseState<T>()

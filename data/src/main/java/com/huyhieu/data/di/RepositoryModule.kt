@@ -1,8 +1,7 @@
 package com.huyhieu.data.di
 
-import com.huyhieu.data.datasource.ArticleDatasource
-import com.huyhieu.data.repository.ArticleRepositoryImpl
-import com.huyhieu.domain.repository.ArticleRepository
+import com.huyhieu.data.repository.CoffeeRepositoryImpl
+import com.huyhieu.domain.repository.CoffeeRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -15,5 +14,5 @@ import javax.inject.Singleton
 interface RepositoryModule {
 
     @Binds
-    fun bindArticleRepository(articleRepositoryImpl: ArticleRepositoryImpl): ArticleRepository
+    fun bindCoffeeRepository(coffeeRepositoryImpl: CoffeeRepositoryImpl): CoffeeRepository
 }

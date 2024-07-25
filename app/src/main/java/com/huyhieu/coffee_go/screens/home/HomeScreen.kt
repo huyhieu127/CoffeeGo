@@ -13,6 +13,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.huyhieu.coffee_go.R
 import com.huyhieu.coffee_go.ui.common.ShimmerEffect
 import com.huyhieu.coffee_go.uitls.localContext
+import com.huyhieu.domain.entity.Coffee
+import com.huyhieu.domain.common.ResponseState
+import com.huyhieu.libs.logDebug
 
 private const val TAG = "HomeScreen"
 
@@ -23,9 +26,11 @@ fun HomeScreen(
 ) {
     val context = localContext
     val homeUiState = homeVM.homeUiState.collectAsState().value
+    val bannerUiState = homeVM.bannerUiState.collectAsState().value
     HomeUi(
         modifier = modifier,
         homeUiState = homeUiState,
+        bannerUiState = bannerUiState,
         actionAvatarClick = {},
         actionNotificationClick = {
             Toast.makeText(context, "Notification", Toast.LENGTH_SHORT).show()
@@ -44,13 +49,12 @@ private fun HomeUiPreview() {
         homeUiState = HomeUiState(
             toolbar = Toolbar(
                 greetings = "Good morning!", name = "Cristiano Ronaldo", isBadgeVisible = true
-            ),
-            banners = listOf(
+            ), banners = listOf(
                 Banner(bannerRes = R.drawable.coffee_banner),
                 Banner(bannerRes = R.drawable.coffee_banner),
                 Banner(bannerRes = R.drawable.coffee_banner),
             )
-        )
+        ), bannerUiState = ResponseState.Loading()
     )
 }
 
@@ -58,6 +62,7 @@ private fun HomeUiPreview() {
 private fun HomeUi(
     modifier: Modifier = Modifier,
     homeUiState: HomeUiState,
+    bannerUiState: ResponseState<List<Coffee>>,
     actionAvatarClick: () -> Unit = {},
     actionNotificationClick: () -> Unit = {},
     onActionBannerClick: (Banner) -> Unit = {}
@@ -80,17 +85,25 @@ private fun HomeUi(
                     actionNotificationClick = actionNotificationClick
                 )
             }
-
-            ShimmerEffect(
-                isLoading = homeUiState.banners.isEmpty(),
-                contentLoading = {
+            when (bannerUiState) {
+                is ResponseState.Error -> {
+                    Toast.makeText(localContext, bannerUiState.error, Toast.LENGTH_SHORT).show()
+                }
+                is ResponseState.Loading -> {
                     BannerShimmerUi()
-                },
-            ) {
-                BannerUi(
-                    banners = homeUiState.banners,
-                    onActionBannerClick = onActionBannerClick,
-                )
+                }
+                is ResponseState.Success -> {
+                    runCatching {
+                        bannerUiState.data.map { coffee ->
+                            Banner(id = coffee.idStr, bannerUrl = coffee.imageUrl)
+                        }
+                    }.onSuccess { banners ->
+                        BannerUi(
+                            banners = banners,
+                            onActionBannerClick = onActionBannerClick,
+                        )
+                    }
+                }
             }
         }
     }

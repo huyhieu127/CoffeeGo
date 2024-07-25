@@ -2,7 +2,9 @@ package com.huyhieu.coffee_go.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.huyhieu.coffee_go.R
+import com.huyhieu.domain.common.ResponseState
+import com.huyhieu.domain.intractor.GetAllProductsUseCase
+import com.huyhieu.domain.intractor.GetLimitProductsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +16,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeVM @Inject constructor() : ViewModel() {
+class HomeVM @Inject constructor(
+    getAllProductsUseCase: GetAllProductsUseCase,
+    getLimitProductsUseCase: GetLimitProductsUseCase,
+) : ViewModel() {
 
     private val _homeUiState = MutableStateFlow(HomeUiState())
     val homeUiState = _homeUiState.asStateFlow().stateIn(
@@ -23,10 +28,17 @@ class HomeVM @Inject constructor() : ViewModel() {
         initialValue = _homeUiState.value
     )
 
+    val bannerUiState = getLimitProductsUseCase(limit = 5).stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = ResponseState.Loading()
+    )
+
 
     init {
         loadHome()
     }
+
 
     fun actionNotification() {
         _homeUiState.update {
@@ -43,37 +55,6 @@ class HomeVM @Inject constructor() : ViewModel() {
                         greetings = "Good morning!",
                         name = "Cristiano Ronaldo",
                         isBadgeVisible = true
-                    )
-                )
-            }
-            delay(1000)
-            _homeUiState.update {
-                it.copy(
-                    banners = listOf(
-                        Banner(
-                            id = "1",
-                            bannerRes = R.drawable.coffee_banner
-                        ),
-                        Banner(
-                            id = "2",
-                            bannerRes = R.drawable.coffee_banner
-                        ),
-                        Banner(
-                            id = "3",
-                            bannerRes = R.drawable.coffee_banner
-                        ),
-                        Banner(
-                            id = "4",
-                            bannerRes = R.drawable.coffee_banner
-                        ),
-                        Banner(
-                            id = "5",
-                            bannerRes = R.drawable.coffee_banner
-                        ),
-                        Banner(
-                            id = "6",
-                            bannerRes = R.drawable.coffee_banner
-                        ),
                     )
                 )
             }

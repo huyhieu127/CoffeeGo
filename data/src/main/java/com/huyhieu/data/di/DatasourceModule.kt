@@ -1,7 +1,7 @@
 package com.huyhieu.data.di
 
-import com.huyhieu.data.datasource.ArticleDatasource
-import com.huyhieu.data.datasource.ArticleDatasourceImpl
+import com.huyhieu.data.datasource.CoffeeDatasource
+import com.huyhieu.data.datasource.CoffeeDatasourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,5 +13,5 @@ import javax.inject.Singleton
 interface DatasourceModule {
     @Singleton
     @Binds
-    fun bindArticleDatasource(articleDatasourceImpl: ArticleDatasourceImpl): ArticleDatasource
+    fun bindCoffeeDatasource(coffeeDatasourceImpl: CoffeeDatasourceImpl): CoffeeDatasource
 }
