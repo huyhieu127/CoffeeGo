@@ -37,14 +37,14 @@ class HomeVM @Inject constructor(
         initialValue = ResponseState.Loading()
     )
 
-    val nearbyShopUiState = getSortProductsUseCase(typeSort = TypeSort.ASCENDING).stateIn(
+    val nearbyShopUiState = getSortProductsUseCase(typeSort = TypeSort.DESCENDING).stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = ResponseState.Loading()
     )
 
 
-    val popularMenuUiState = getSortProductsUseCase(typeSort = TypeSort.DESCENDING).stateIn(
+    val popularMenuUiState = getSortProductsUseCase(typeSort = TypeSort.ASCENDING).stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = ResponseState.Loading()

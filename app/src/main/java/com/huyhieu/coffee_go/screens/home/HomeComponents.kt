@@ -378,7 +378,7 @@ private fun NearbyShopItemUi(coffee: Coffee) {
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxSize()
-                    .scale(4F)
+                    .scale(7F)
                     .blur(
                         radiusX = 10.dp,
                         radiusY = 10.dp,
@@ -515,7 +515,7 @@ private fun PopularMenuItemUi(coffee: Coffee) {
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxSize()
-                    .scale(4F)
+                    .scale(7F)
                     .blur(
                         radiusX = 10.dp,
                         radiusY = 10.dp,
