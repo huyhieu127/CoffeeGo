@@ -14,7 +14,6 @@ object FontStyle {
         fontFamily = fontFamilyDefault,
         fontWeight = FontWeight.Light,
         fontSize = fontSizeDefault,
-        lineHeight = measureRatioLineHeight(fontSizeDefault, ratioLineHeightDefault),
         lineHeightStyle = LineHeightStyle(
             alignment = LineHeightStyle.Alignment.Center,
             trim = LineHeightStyle.Trim.LastLineBottom,
@@ -25,7 +24,6 @@ object FontStyle {
         fontFamily = fontFamilyDefault,
         fontWeight = FontWeight.Normal,
         fontSize = fontSizeDefault,
-        lineHeight = measureRatioLineHeight(fontSizeDefault, ratioLineHeightDefault),
         lineHeightStyle = LineHeightStyle(
             alignment = LineHeightStyle.Alignment.Center,
             trim = LineHeightStyle.Trim.LastLineBottom,
@@ -36,7 +34,6 @@ object FontStyle {
         fontFamily = fontFamilyDefault,
         fontWeight = FontWeight.Medium,
         fontSize = fontSizeDefault,
-        lineHeight = measureRatioLineHeight(fontSizeDefault, ratioLineHeightDefault),
         lineHeightStyle = LineHeightStyle(
             alignment = LineHeightStyle.Alignment.Center,
             trim = LineHeightStyle.Trim.LastLineBottom,
@@ -47,7 +44,6 @@ object FontStyle {
         fontFamily = fontFamilyDefault,
         fontWeight = FontWeight.SemiBold,
         fontSize = fontSizeDefault,
-        lineHeight = measureRatioLineHeight(fontSizeDefault, ratioLineHeightDefault),
         lineHeightStyle = LineHeightStyle(
             alignment = LineHeightStyle.Alignment.Center,
             trim = LineHeightStyle.Trim.LastLineBottom,
@@ -58,7 +54,6 @@ object FontStyle {
         fontFamily = fontFamilyDefault,
         fontWeight = FontWeight.Bold,
         fontSize = fontSizeDefault,
-        lineHeight = measureRatioLineHeight(fontSizeDefault, ratioLineHeightDefault),
         lineHeightStyle = LineHeightStyle(
             alignment = LineHeightStyle.Alignment.Center,
             trim = LineHeightStyle.Trim.LastLineBottom,

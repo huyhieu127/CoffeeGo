@@ -2,9 +2,11 @@ package com.huyhieu.data.mapper
 
 import com.huyhieu.domain.common.ResponseState
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import retrofit2.Response
 
@@ -44,4 +46,21 @@ object ApiMapper {
 //        .onEach {
 //            onEach.invoke(it)
 //        }
+
+    fun <T, R> asFlow(
+        onConverter: T.() -> R,
+        api: suspend () -> Response<T>//, onEach: ((ResponseState<T>) -> Unit) = { }
+    ) = flow {
+        val response = api.invoke()
+        val body = response.body()
+        if (response.isSuccessful && body != null) {
+            emit(ResponseState.Success(data = onConverter(body)))
+        } else {
+            emit(ResponseState.Error(error = response.message()))
+        }
+    }.flowOn(Dispatchers.IO).onStart {
+        emit(ResponseState.Loading())
+    }.catch {
+        emit(ResponseState.Error(error = it.localizedMessage ?: "API: Something error!"))
+    }
 }

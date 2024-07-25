@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.huyhieu.domain.common.ResponseState
 import com.huyhieu.domain.intractor.GetAllProductsUseCase
 import com.huyhieu.domain.intractor.GetLimitProductsUseCase
+import com.huyhieu.domain.intractor.GetSortProductsUseCase
+import com.huyhieu.domain.utils.TypeSort
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,6 +21,7 @@ import javax.inject.Inject
 class HomeVM @Inject constructor(
     getAllProductsUseCase: GetAllProductsUseCase,
     getLimitProductsUseCase: GetLimitProductsUseCase,
+    getSortProductsUseCase: GetSortProductsUseCase,
 ) : ViewModel() {
 
     private val _homeUiState = MutableStateFlow(HomeUiState())
@@ -29,6 +32,19 @@ class HomeVM @Inject constructor(
     )
 
     val bannerUiState = getLimitProductsUseCase(limit = 5).stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = ResponseState.Loading()
+    )
+
+    val nearbyShopUiState = getSortProductsUseCase(typeSort = TypeSort.ASCENDING).stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = ResponseState.Loading()
+    )
+
+
+    val popularMenuUiState = getSortProductsUseCase(typeSort = TypeSort.DESCENDING).stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = ResponseState.Loading()
