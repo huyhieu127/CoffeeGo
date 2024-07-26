@@ -110,7 +110,8 @@ fun BannerUi(
             ) { pageIndex ->
                 banners.getOrNull(pageIndex % banners.size)?.let { banner ->
                     val pageOffset = pagerState.getOffsetDistanceInPages(pageIndex)
-                    val scaleImage = (pageOffset.absoluteValue * 6F).takeIf { it > 0.9F } ?: 0.9F
+                    val scaleBg = 7F - (pageOffset.absoluteValue * 5F)
+                    val scaleImage = (pageOffset.absoluteValue * 6F) + 0.9F
                     val minusRatioHeight = (pageOffset.absoluteValue * 0.7F)
                     Box(
                         modifier = Modifier
@@ -121,7 +122,7 @@ fun BannerUi(
                                 onActionBannerClick(banner)
                             }
                             .graphicsLayer {
-                                rotationY = -(pageOffset * 15F)
+                                rotationY = -(pageOffset * 10F)
                             }
                             .aspectRatio(4 / (2F - minusRatioHeight))
                             .clip(RoundedCornerShape(cornerSize))
@@ -133,7 +134,7 @@ fun BannerUi(
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
                                 .fillMaxSize()
-                                .scale(5F)
+                                .scale(scaleBg)
                                 .blur(
                                     radiusX = 10.dp,
                                     radiusY = 10.dp,
@@ -147,6 +148,9 @@ fun BannerUi(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .scale(scaleImage)
+                                .graphicsLayer {
+                                    rotationZ = 20F - (40F * pageOffset.absoluteValue)
+                                }
                         )
                     }
                 }
