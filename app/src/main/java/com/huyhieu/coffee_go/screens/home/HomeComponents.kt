@@ -1,7 +1,6 @@
 package com.huyhieu.coffee_go.screens.home
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -34,10 +33,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
@@ -45,6 +40,7 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -69,6 +65,7 @@ import com.huyhieu.coffee_go.ui.theme.utils.type.size
 import com.huyhieu.coffee_go.uitls.screenWidth
 import com.huyhieu.domain.entity.Coffee
 import kotlinx.coroutines.delay
+import kotlin.math.absoluteValue
 
 private const val TAG = "HomeComponents"
 
@@ -92,15 +89,9 @@ fun BannerUi(
         val pagerState = rememberPagerState(
             initialPage = banners.getInitialPage(),
             pageCount = { Int.MAX_VALUE })
-        var start by remember { mutableStateOf(false) }
-        val scale by animateFloatAsState(
-            targetValue = if (start) 0.8f else 0.5f,
-            label = ""
-        )
+
         LaunchedEffect(pagerState.settledPage) {
-            start = true
             delay(3000)
-            start = false
             val nextPage = if (pagerState.currentPage == Int.MAX_VALUE * (2 / 3)) {
                 (Int.MAX_VALUE / 3)
             } else {
@@ -115,18 +106,26 @@ fun BannerUi(
         ) {
             HorizontalPager(
                 state = pagerState,
+                modifier = Modifier.align(alignment = Alignment.Center),
             ) { pageIndex ->
                 banners.getOrNull(pageIndex % banners.size)?.let { banner ->
+                    val pageOffset = pagerState.getOffsetDistanceInPages(pageIndex)
+                    val scaleImage = (pageOffset.absoluteValue * 6F).takeIf { it > 0.9F } ?: 0.9F
+                    val minusRatioHeight = (pageOffset.absoluteValue * 0.7F)
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = edgeSize)
                             .aspectRatio(4 / 2F)
-                            .clip(RoundedCornerShape(cornerSize))
-                            .background(PrimaryLight)
                             .clickableNoneRipple {
                                 onActionBannerClick(banner)
-                            },
+                            }
+                            .graphicsLayer {
+                                rotationY = -(pageOffset * 15F)
+                            }
+                            .aspectRatio(4 / (2F - minusRatioHeight))
+                            .clip(RoundedCornerShape(cornerSize))
+                            .background(PrimaryLight),
                     ) {
                         AsyncImage(
                             model = banner.bannerUrl.ifEmpty { R.drawable.coffee_banner },
@@ -147,7 +146,7 @@ fun BannerUi(
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
                                 .fillMaxSize()
-                                .scale(scale)
+                                .scale(scaleImage)
                         )
                     }
                 }
