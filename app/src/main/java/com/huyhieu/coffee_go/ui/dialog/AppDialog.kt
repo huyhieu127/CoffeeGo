@@ -24,8 +24,8 @@ import androidx.compose.ui.window.Dialog
 import com.huyhieu.coffee_go.R
 import com.huyhieu.coffee_go.ui.common.AppThumbnail
 import com.huyhieu.coffee_go.ui.common.SpacerVertical
-import com.huyhieu.coffee_go.ui.common.button.ButtonPrimary
-import com.huyhieu.coffee_go.ui.common.button.ButtonPrimaryLight
+import com.huyhieu.coffee_go.ui.common.button.AppPrimaryButton
+import com.huyhieu.coffee_go.ui.common.button.AppLightButton
 import com.huyhieu.coffee_go.ui.theme.Primary
 import com.huyhieu.coffee_go.ui.theme.TextBlack
 import com.huyhieu.coffee_go.ui.theme.utils.brush.BrushStyle
@@ -121,7 +121,7 @@ fun AppDialog(
                     }
                     if (textAccept.isNotEmpty()) {
                         SpacerVertical(12.dp)
-                        ButtonPrimary(
+                        AppPrimaryButton(
                             text = textAccept,
                             modifier = Modifier.fillMaxWidth(),
                             onClick = onAccept
@@ -129,7 +129,7 @@ fun AppDialog(
                     }
                     if (textCancel.isNotEmpty()) {
                         SpacerVertical(12.dp)
-                        ButtonPrimaryLight(
+                        AppLightButton(
                             text = textCancel,
                             modifier = Modifier.fillMaxWidth(),
                             onClick = onCancel

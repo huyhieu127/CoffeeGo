@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -18,6 +19,26 @@ import com.huyhieu.coffee_go.ui.theme.Line
 import com.huyhieu.coffee_go.ui.theme.Primary
 import com.huyhieu.coffee_go.ui.theme.PrimaryLight
 import com.huyhieu.coffee_go.ui.theme.utils.brush.BrushStyle
+
+fun Modifier.borderGradient(
+    brush: Brush = BrushStyle.GradientPrimary_Horizontal,
+    width: Dp = 1.dp,
+    shape: Shape = RoundedCornerShape(8.dp)
+) = this.border(
+    width = width,
+    brush = brush,
+    shape = shape
+)
+
+fun Modifier.borderColor(
+    color: Color = Line,
+    width: Dp = 1.dp,
+    shape: Shape = RoundedCornerShape(8.dp)
+) = this.border(
+    width = width,
+    color = color,
+    shape = shape
+)
 
 fun Modifier.gradientStyle(
     shape: Shape,

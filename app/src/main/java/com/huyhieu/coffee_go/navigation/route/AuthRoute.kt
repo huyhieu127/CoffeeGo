@@ -1,4 +1,4 @@
-package com.huyhieu.listentogether.navigation.route
+package com.huyhieu.coffee_go.navigation.route
 
 sealed class AuthRoute(val route: String) {
     data object LetsStart : AuthRoute("lets_start")

@@ -25,3 +25,7 @@ val screenHeight
 val screenWidth
     @Composable
     get() = configuration.screenWidthDp.dp
+
+@Composable
+inline fun <T> T?.takeIfInspectionMode(otherCondition: (T.() -> Boolean) = { true }, onTakeDefault: () -> T): T =
+    this?.takeIf { localInspectionMode && otherCondition.invoke(this)} ?: onTakeDefault()

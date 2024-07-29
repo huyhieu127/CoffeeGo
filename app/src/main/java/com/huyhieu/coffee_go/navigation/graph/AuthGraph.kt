@@ -1,12 +1,13 @@
 package com.huyhieu.coffee_go.navigation.graph
 
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.huyhieu.listentogether.navigation.route.AppRoute
-import com.huyhieu.listentogether.navigation.route.AuthRoute
+import com.huyhieu.coffee_go.navigation.route.AuthRoute
 
-fun NavGraphBuilder.authGraph() {
+fun NavGraphBuilder.authGraph(navController: NavHostController) {
     navigation(
         startDestination = AuthRoute.LetsStart.route,
         route = AppRoute.Auth.route,

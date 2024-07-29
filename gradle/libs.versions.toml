@@ -4,6 +4,7 @@ biometric = "1.1.0"
 gson = "2.10.1"
 kotlin = "1.9.22"
 ksp = "1.9.22-1.0.17"
+kotlinxSerializationJson = "1.6.0"
 
 kotlinxDatetime = "0.4.1"
 accompanist = "0.32.0"
@@ -12,13 +13,14 @@ junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 
-lifecycleRuntimeKtx = "2.8.3"
-activityCompose = "1.9.0"
+lifecycleRuntimeKtx = "2.8.4"
+activityCompose = "1.9.1"
 composeBom = "2024.06.00"
-navigationCompose = "2.7.7"
+navigationCompose = "2.8.0-beta06"
 appcompat = "1.7.0"
 material = "1.12.0"
-foundation = "1.7.0-beta05"
+materialIconsExtend = "1.6.8"
+foundation = "1.7.0-beta06"
 
 googleServices = "4.4.2"
 firebaseCrashlytics = "3.0.2"
@@ -45,6 +47,7 @@ jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = 
 android-library = { id = "com.android.library", version.ref = "agp" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlytics" }
@@ -52,6 +55,7 @@ firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "
 [libraries]
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -68,16 +72,16 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "foundation" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+material-icons-extend = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtend" }
 
 #Jetpacks
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
 
 #Room
-room-runtime = {module = "androidx.room:room-runtime", version.ref = "room"}
-room-ktx = {module = "androidx.room:room-ktx", version.ref = "room"}
-room-compiler = {module = "androidx.room:room-compiler", version.ref = "room"}
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 
 #Hilt
 hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }

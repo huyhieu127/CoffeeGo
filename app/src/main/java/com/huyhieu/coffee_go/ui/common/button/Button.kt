@@ -30,12 +30,14 @@ import com.huyhieu.coffee_go.ui.theme.TextBlack
 import com.huyhieu.coffee_go.ui.theme.utils.brush.BrushStyle
 import com.huyhieu.coffee_go.ui.theme.utils.type.FontStyle
 import com.huyhieu.coffee_go.ui.theme.utils.type.size
+import com.huyhieu.coffee_go.uitls.takeIfInspectionMode
 
 @Preview
 @Composable
-fun ButtonPrimary(
+fun AppPrimaryButton(
     modifier: Modifier = Modifier,
-    text: String = "Normal Button",
+    isShowPreview: Boolean = true,
+    text: String = "Normal Button".takeIfInspectionMode({ isShowPreview }) { "" },
     fontSize: TextUnit = 16.sp,
     shape: Shape = RoundedCornerShape(50),
     contentPadding: PaddingValues = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
@@ -65,9 +67,10 @@ fun ButtonPrimary(
 
 @Preview
 @Composable
-fun ButtonPrimaryLight(
+fun AppLightButton(
     modifier: Modifier = Modifier,
-    text: String = "Light Button",
+    isShowPreview: Boolean = true,
+    text: String = "Light Button".takeIfInspectionMode({ isShowPreview }) { "" },
     fontSize: TextUnit = 16.sp,
     shape: Shape = RoundedCornerShape(50),
     contentPadding: PaddingValues = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
@@ -100,9 +103,10 @@ fun ButtonPrimaryLight(
 
 @Preview
 @Composable
-fun ButtonIcon(
+fun AppIconButton(
     modifier: Modifier = Modifier,
-    text: String = "ButtonIcon",
+    isShowPreview: Boolean = true,
+    text: String = "ButtonIcon".takeIfInspectionMode({ isShowPreview }) { "" },
     @DrawableRes drawableRes: Int = R.drawable.ic_google,
     fontSize: TextUnit = 16.sp,
     shape: Shape = RoundedCornerShape(14.dp),

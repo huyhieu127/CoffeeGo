@@ -5,7 +5,6 @@ data class HomeUiState(
     val toolbar: Toolbar = Toolbar(),
     val banners: List<Banner> = emptyList(),
     val coffeeShops: List<CoffeeShop> = emptyList(),
-    val coffees: List<Coffee> = emptyList(),
 )
 
 data class Toolbar(
@@ -29,14 +28,4 @@ data class CoffeeShop(
     val lat: Double = 0.0,
     val long: Double = 0.0,
     val rating: Double = 0.0,
-)
-
-data class Coffee(
-    val url: String = "",
-    val id: String = "",
-    val type: String = "",
-    val name: String = "",
-    val price: Double = 0.0,
-    val description: String = "",
-    val rating: Double = 0.0
 )

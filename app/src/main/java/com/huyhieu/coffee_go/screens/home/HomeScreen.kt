@@ -1,14 +1,10 @@
 package com.huyhieu.coffee_go.screens.home
 
 import android.widget.Toast
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -28,13 +24,15 @@ private const val TAG = "HomeScreen"
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    homeVM: HomeVM = hiltViewModel(),
+    vm: HomeVM = hiltViewModel(),
+    onNavigateToViewAllOrderDetail: () -> Unit,
+    onNavigateToOrderDetail: (Coffee) -> Unit,
 ) {
     val context = localContext
-    val homeUiState = homeVM.homeUiState.collectAsState().value
-    val bannerUiState = homeVM.bannerUiState.collectAsState().value
-    val nearbyShopUiState = homeVM.nearbyShopUiState.collectAsState().value
-    val popularMenuUiState = homeVM.popularMenuUiState.collectAsState().value
+    val homeUiState = vm.homeUiState.collectAsState().value
+    val bannerUiState = vm.bannerUiState.collectAsState().value
+    val nearbyShopUiState = vm.nearbyShopUiState.collectAsState().value
+    val popularMenuUiState = vm.popularMenuUiState.collectAsState().value
     HomeUi(
         modifier = modifier,
         homeUiState = homeUiState,
@@ -44,11 +42,13 @@ fun HomeScreen(
         actionAvatarClick = {},
         actionNotificationClick = {
             Toast.makeText(context, "Notification", Toast.LENGTH_SHORT).show()
-            homeVM.actionNotification()
+            vm.actionNotification()
         },
         onActionBannerClick = {
             Toast.makeText(context, "Banner ${it.id}", Toast.LENGTH_SHORT).show()
         },
+        onViewAllClick = onNavigateToViewAllOrderDetail,
+        onItemClick = onNavigateToOrderDetail,
     )
 }
 
@@ -71,7 +71,6 @@ private fun HomeUiPreview() {
     )
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun HomeUi(
     modifier: Modifier = Modifier,
@@ -81,7 +80,9 @@ private fun HomeUi(
     popularMenuUiState: ResponseState<List<Coffee>>,
     actionAvatarClick: () -> Unit = {},
     actionNotificationClick: () -> Unit = {},
-    onActionBannerClick: (Banner) -> Unit = {}
+    onActionBannerClick: (Banner) -> Unit = {},
+    onViewAllClick: () -> Unit = {},
+    onItemClick: (Coffee) -> Unit = {},
 ) {
     Scaffold(modifier) {
         Column(
@@ -174,9 +175,8 @@ private fun HomeUi(
                             PopularMenuUi(
                                 title = "Popular Menu",
                                 popularMenuList = popularMenuUiState.data,
-                                onActionViewAllClick = {
-
-                                },
+                                onViewAllClick = onViewAllClick,
+                                onItemClick = onItemClick
                             )
                         }
                     }

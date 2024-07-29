@@ -43,7 +43,6 @@ class HomeVM @Inject constructor(
         initialValue = ResponseState.Loading()
     )
 
-
     val popularMenuUiState = getSortProductsUseCase(typeSort = TypeSort.ASCENDING).stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),

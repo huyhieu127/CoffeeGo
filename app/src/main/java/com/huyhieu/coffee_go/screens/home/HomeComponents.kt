@@ -275,14 +275,14 @@ fun ToolBarUi(
 private fun TitleContainerUiPreview() {
     TitleContainerUi(
         title = "Nearby Shop",
-        onActionViewAllClick = {},
+        onViewAllClick = {},
     )
 }
 
 @Composable
 fun TitleContainerUi(
     title: String,
-    onActionViewAllClick: () -> Unit,
+    onViewAllClick: () -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -296,7 +296,7 @@ fun TitleContainerUi(
             modifier = Modifier.weight(1F),
         )
         Box(
-            modifier = Modifier.clickableNoneRipple(onActionViewAllClick)
+            modifier = Modifier.clickableNoneRipple(onViewAllClick)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
@@ -348,7 +348,7 @@ fun NearbyShopUi(
         modifier = Modifier.fillMaxWidth()
     ) {
         TitleContainerUi(
-            title = title, onActionViewAllClick = onActionViewAllClick
+            title = title, onViewAllClick = onActionViewAllClick
         )
 
         LazyRow(
@@ -470,7 +470,7 @@ private fun PopularMenuUiPreview() {
                 name = "Caffely Astoria Aromas", region = "Ho Chi Minh"
             ),
         ),
-        onActionViewAllClick = {
+        onViewAllClick = {
 
         },
     )
@@ -481,29 +481,37 @@ private fun PopularMenuUiPreview() {
 fun PopularMenuUi(
     title: String,
     popularMenuList: List<Coffee>,
-    onActionViewAllClick: () -> Unit,
+    onViewAllClick: () -> Unit,
+    onItemClick: (Coffee) -> Unit = {},
 ) {
     Column {
         TitleContainerUi(
-            title = title, onActionViewAllClick = onActionViewAllClick
+            title = title, onViewAllClick = onViewAllClick
         )
         FlowRow(
-            maxItemsInEachRow = 2, modifier = Modifier.padding(horizontal = edgeSize - 8.dp)
+            maxItemsInEachRow = 2,
+            modifier = Modifier.padding(horizontal = edgeSize - 8.dp),
         ) {
             (popularMenuList).forEach { item ->
-                PopularMenuItemUi(item)
+                PopularMenuItemUi(item, onItemClick)
             }
         }
     }
 }
 
 @Composable
-private fun PopularMenuItemUi(coffee: Coffee) {
+private fun PopularMenuItemUi(
+    coffee: Coffee,
+    onItemClick: (Coffee) -> Unit = {},
+    ) {
     val widthImage = (screenWidth - (edgeSize * 3)) / 2 // 3 - Space, 2 - items in row
     Column(
         modifier = Modifier
             .padding(8.dp)
             .width(widthImage)
+            .clickableNoneRipple {
+                onItemClick.invoke(coffee)
+            }
     ) {
         Box(
             modifier = Modifier

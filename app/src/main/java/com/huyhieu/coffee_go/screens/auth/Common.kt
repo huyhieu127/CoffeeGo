@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import com.huyhieu.coffee_go.R
 import com.huyhieu.coffee_go.ui.common.SpacerHorizontal
 import com.huyhieu.coffee_go.ui.common.SpacerVertical
-import com.huyhieu.coffee_go.ui.common.button.ButtonIcon
+import com.huyhieu.coffee_go.ui.common.button.AppIconButton
 import com.huyhieu.coffee_go.ui.theme.Line
 import com.huyhieu.coffee_go.ui.theme.TextBlack
 import com.huyhieu.coffee_go.ui.theme.TextNormal
@@ -121,13 +121,13 @@ fun AuthWithSocial(
         Row(
             modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
         ) {
-            ButtonIcon(
+            AppIconButton(
                 drawableRes = R.drawable.ic_facebook, text = "", modifier = Modifier.width(90.dp)
             ) {
                 onFacebook.invoke()
             }
             SpacerHorizontal(8.dp)
-            ButtonIcon(
+            AppIconButton(
                 drawableRes = R.drawable.ic_google, text = "", modifier = Modifier.width(90.dp)
             ) {
                 onGoogle.invoke()

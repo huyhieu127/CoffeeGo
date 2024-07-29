@@ -16,6 +16,7 @@ val Gray = Color(0xFFF7F7F7)
 val Line = Color(0xFFEFEFEF)
 val GrayBorder = Color(0xFFC5C5C5)
 val Orange = Color(0xFFFFB74D)
+val PrimaryRed = Color(0xFFE53935)
 
 /**
  * Define colors
