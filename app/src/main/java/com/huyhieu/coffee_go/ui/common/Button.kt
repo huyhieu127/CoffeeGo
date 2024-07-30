@@ -1,4 +1,4 @@
-package com.huyhieu.coffee_go.ui.common.button
+package com.huyhieu.coffee_go.ui.common
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
@@ -24,7 +24,9 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.huyhieu.coffee_go.R
-import com.huyhieu.coffee_go.ui.common.SpacerHorizontal
+import com.huyhieu.coffee_go.ui.gradientStyle
+import com.huyhieu.coffee_go.ui.lightStyle
+import com.huyhieu.coffee_go.ui.outlineStyle
 import com.huyhieu.coffee_go.ui.theme.Primary
 import com.huyhieu.coffee_go.ui.theme.TextBlack
 import com.huyhieu.coffee_go.ui.theme.utils.brush.BrushStyle

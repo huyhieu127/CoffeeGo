@@ -19,12 +19,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.huyhieu.coffee_go.R
-import com.huyhieu.coffee_go.ui.common.button.clickableNoneRipple
-import com.huyhieu.coffee_go.ui.modifer.others.tintGradientStyle
+import com.huyhieu.coffee_go.ui.clickableNoneRipple
 import com.huyhieu.coffee_go.ui.theme.Primary
 import com.huyhieu.coffee_go.ui.theme.TextBlack
 import com.huyhieu.coffee_go.ui.theme.utils.type.FontStyle
 import com.huyhieu.coffee_go.ui.theme.utils.type.size
+import com.huyhieu.coffee_go.ui.tintGradientStyle
 
 @Preview
 @Composable

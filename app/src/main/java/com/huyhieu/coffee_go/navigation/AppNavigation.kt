@@ -6,12 +6,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.huyhieu.coffee_go.navigation.graph.authGraph
 import com.huyhieu.coffee_go.navigation.graph.mainGraph
-import com.huyhieu.coffee_go.navigation.route.AppDestination
+import com.huyhieu.coffee_go.navigation.route.AppDest
 import com.huyhieu.listentogether.navigation.route.AppRoute
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = AppDestination.Main) {
+    NavHost(navController = navController, startDestination = AppDest.Main) {
         composable(AppRoute.Splash.route) {
         }
         composable(AppRoute.Introduce.route) {

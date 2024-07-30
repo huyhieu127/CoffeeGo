@@ -31,7 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.huyhieu.coffee_go.R
-import com.huyhieu.coffee_go.ui.common.button.clickableNoneRipple
+import com.huyhieu.coffee_go.ui.clickableNoneRipple
 import com.huyhieu.coffee_go.ui.theme.Line
 import com.huyhieu.coffee_go.ui.theme.Primary
 import com.huyhieu.coffee_go.ui.theme.PrimaryLight

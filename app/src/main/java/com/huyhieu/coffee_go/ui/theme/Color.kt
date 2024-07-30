@@ -22,6 +22,7 @@ val PrimaryRed = Color(0xFFE53935)
  * Define colors
  * */
 val TextPlaceholder = Color(0xFF7E7E7E)
+val TextDescription = Color(0xFF7E7E7E)
 val TextNormal = Color(0xFF525252)
 val TextBlack = Color(0xFF000000)
 

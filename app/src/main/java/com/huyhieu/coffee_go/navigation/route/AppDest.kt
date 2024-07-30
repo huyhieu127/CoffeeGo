@@ -3,7 +3,7 @@ package com.huyhieu.coffee_go.navigation.route
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed class AppDestination {
+sealed class AppDest {
 
     @Serializable
     object Splash

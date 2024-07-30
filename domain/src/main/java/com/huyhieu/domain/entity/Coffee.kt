@@ -5,16 +5,17 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Coffee(
     val description: String = "",
-    val type: List<String> = listOf(
-        "Hot", "Iced"
+    val type: List<OrderOption> = listOf(
+        OrderOption(1, "Hot"),
+        OrderOption(2, "Iced")
     ),
-    val size: List<Size> = listOf(
-        Size(1, "Small", "S", 0.0),
-        Size(2, "Medium", "M", 0.5),
-        Size(3, "Large", "L", 1.0),
+    val size: List<OrderOption> = listOf(
+        OrderOption(1, "Small", "S", 0.0),
+        OrderOption(2, "Medium", "M", 0.5),
+        OrderOption(3, "Large", "L", 1.0),
     ),
-    val flavorProfile: List<String> = listOf(),
-    val grindOption: List<String> = listOf(),
+    val flavorProfile: List<OrderOptional> = listOf(),
+    val grindOption: List<OrderOptional> = listOf(),
     val idStr: String = "",
     val id: Int = 0,
     val imageUrl: String = "",
@@ -22,13 +23,21 @@ data class Coffee(
     val price: Double = 0.0,
     val region: String = "",
     val roastLevel: Int = 0,
-    val weight: Int = 0
+    val weight: Int = 0,
+    val isFavorite: Boolean = false,
 )
 
 @Serializable
-data class Size(
+data class OrderOption(
     val id: Int,
     val name: String,
-    val shortName: String,
-    val extraPrice: Double,
+    val shortName: String = "",
+    val extraPrice: Double = 0.0,
+)
+
+@Serializable
+data class OrderOptional(
+    val id: Int,
+    val name: String,
+    val extraPrice: Double = 0.0,
 )

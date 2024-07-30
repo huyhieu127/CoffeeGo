@@ -12,7 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.huyhieu.coffee_go.R
-import com.huyhieu.coffee_go.ui.common.button.gradientStyle
+import com.huyhieu.coffee_go.ui.gradientStyle
 import com.huyhieu.coffee_go.ui.theme.utils.brush.BrushStyle
 
 @Preview

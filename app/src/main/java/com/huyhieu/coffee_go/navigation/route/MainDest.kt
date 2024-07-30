@@ -4,14 +4,15 @@ import com.huyhieu.domain.entity.Coffee
 import com.huyhieu.libs.toData
 import kotlinx.serialization.Serializable
 
-sealed class MainDestination {
+sealed class MainDest {
     @Serializable
     object Home
 
     @Serializable
     data class OrderDetail(
-        val coffeeId: String,
-        val coffeeJson: String,
+        val coffeeId: String = "",
+        val coffeeJson: String = "",
+        val orderId: Int = -1,
     ) {
         fun getCoffee(): Coffee {
             return checkNotNull(coffeeJson.toData<Coffee>())

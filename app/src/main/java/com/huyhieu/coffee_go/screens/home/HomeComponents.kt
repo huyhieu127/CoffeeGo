@@ -49,7 +49,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.huyhieu.coffee_go.R
 import com.huyhieu.coffee_go.ui.common.SpacerHorizontal
-import com.huyhieu.coffee_go.ui.common.button.clickableNoneRipple
+import com.huyhieu.coffee_go.ui.clickableNoneRipple
 import com.huyhieu.coffee_go.ui.theme.GrayBorder
 import com.huyhieu.coffee_go.ui.theme.Orange
 import com.huyhieu.coffee_go.ui.theme.Primary

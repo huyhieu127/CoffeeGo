@@ -24,8 +24,8 @@ import androidx.compose.ui.window.Dialog
 import com.huyhieu.coffee_go.R
 import com.huyhieu.coffee_go.ui.common.AppThumbnail
 import com.huyhieu.coffee_go.ui.common.SpacerVertical
-import com.huyhieu.coffee_go.ui.common.button.AppPrimaryButton
-import com.huyhieu.coffee_go.ui.common.button.AppLightButton
+import com.huyhieu.coffee_go.ui.common.AppPrimaryButton
+import com.huyhieu.coffee_go.ui.common.AppLightButton
 import com.huyhieu.coffee_go.ui.theme.Primary
 import com.huyhieu.coffee_go.ui.theme.TextBlack
 import com.huyhieu.coffee_go.ui.theme.utils.brush.BrushStyle

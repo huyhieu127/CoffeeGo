@@ -17,7 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.huyhieu.coffee_go.ui.common.button.AppPrimaryButton
+import com.huyhieu.coffee_go.ui.common.AppPrimaryButton
 import com.huyhieu.coffee_go.ui.theme.AppTypography
 import com.huyhieu.coffee_go.ui.theme.Primary
 import com.huyhieu.coffee_go.ui.theme.utils.brush.BrushStyle
