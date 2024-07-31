@@ -43,12 +43,11 @@ class OrderDetailVM @Inject constructor(
             OrderDetailAction.ExpandFlavorProfileClick -> onExpandFlavorProfileClick()
             is OrderDetailAction.ItemSelectedGrindOption -> onItemSelectedGrindOption(action.orderOptional)
             OrderDetailAction.ExpandGrindOptionClick -> onExpandGrindOptionClick()
-            OrderDetailAction.AddToBasketClick -> onAddToBasketClick()
             else -> Unit
         }
     }
 
-    private fun onAddToBasketClick() {
+    fun onAddToBasketClick(onAction: () -> Unit) {
         viewModelScope.launch {
             uiState.also {
                 val order = Order(
@@ -58,11 +57,13 @@ class OrderDetailVM @Inject constructor(
                     sizeId = it.sizeSelected?.id,
                     flavorProfileId = it.flavorProfileSelected?.id,
                     grindOptionId = it.grindOptionSelected?.id,
+                    totalPrice = it.totalPrice,
                 )
                 insertOrderUseCase(order).collectLatest { resultState ->
                     logDebug(resultState.toJson())
                     if (resultState is ResultState.Success) {
                         logDebug(resultState.data.toString())
+                        onAction()
                     }
                 }
             }
@@ -163,7 +164,7 @@ class OrderDetailVM @Inject constructor(
         if (orderId == -1) {
             emit(OrderState.Success(null))
         }
-        delay(1000)
+        delay(500)
         emit(
             OrderState.Success(
                 Order(

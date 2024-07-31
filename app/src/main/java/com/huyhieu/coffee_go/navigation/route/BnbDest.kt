@@ -7,10 +7,10 @@ sealed class BnbDest {
     data object Home: BnbDest()
 
     @Serializable
-    data object Shop: BnbDest()
+    data object Store: BnbDest()
 
     @Serializable
-    data object History: BnbDest()
+    data object Order: BnbDest()
 
     @Serializable
     data object Profile: BnbDest()

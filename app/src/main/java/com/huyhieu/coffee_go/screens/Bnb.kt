@@ -32,11 +32,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.huyhieu.coffee_go.R
 import com.huyhieu.coffee_go.navigation.route.BnbDest
-import com.huyhieu.coffee_go.screens.history.HistoryScreen
-import com.huyhieu.coffee_go.screens.history.ProfileScreen
-import com.huyhieu.coffee_go.screens.home.homeScreen
-import com.huyhieu.coffee_go.screens.order_detail.navigateToOrderDetail
-import com.huyhieu.coffee_go.screens.shop.ShopScreen
+import com.huyhieu.coffee_go.screens.home.HomeScreen
+import com.huyhieu.coffee_go.screens.order.OrderScreen
+import com.huyhieu.coffee_go.screens.order.ProfileScreen
+import com.huyhieu.coffee_go.screens.store.StoreScreen
 import com.huyhieu.coffee_go.ui.clickableNoneRipple
 import com.huyhieu.coffee_go.ui.common.AnimatedContentFadeIn
 import com.huyhieu.coffee_go.ui.common.SpacerVertical
@@ -61,15 +60,17 @@ private val navigationBars = listOf(
     NavigationBar(
         title = "Store",
         iconResourceId = R.drawable.ic_store,
-        badgeAmount = 7
+        destination = BnbDest.Store,
     ),
     NavigationBar(
         title = "Order",
         iconResourceId = R.drawable.ic_brasket,
+        destination = BnbDest.Order,
     ),
     NavigationBar(
         title = "Profile",
         iconResourceId = R.drawable.ic_person,
+        destination = BnbDest.Profile,
     ),
 )
 
@@ -77,36 +78,42 @@ private val navigationBars = listOf(
 @Composable
 fun Bnb(
     modifier: Modifier = Modifier,
-    mainNavHostController: NavHostController = rememberNavController(),
+    appNavHostController: NavHostController = rememberNavController(),
 ) {
-    val navController: NavHostController = rememberNavController()
+    val navBarController: NavHostController = rememberNavController()
     var tabSelected by rememberSaveable { mutableIntStateOf(0) }
 
     Scaffold(
         modifier = modifier,
         bottomBar = {
             AppNavigationBar(navigationBars, tabSelected) { index, item ->
-                tabSelected = index
-                navController.navigate(item.destination)
+                navBarController.navigate(item.destination){
+                    popUpTo(navBarController.graph.startDestinationId)
+                }
             }
         },
     ) {
         NavHost(
-            navController = navController,
+            navController = navBarController,
             modifier = Modifier.padding(it),
             startDestination = BnbDest.Home
         ) {
-            homeScreen(
-                onNavigateToViewAllOrderDetail = {},
-                onNavigateToOrderDetail = mainNavHostController::navigateToOrderDetail,
-            )
-            composable<BnbDest.Shop> {
-                ShopScreen()
+            composable<BnbDest.Home> {
+                tabSelected = 0
+                HomeScreen(
+                    navController = appNavHostController
+                )
             }
-            composable<BnbDest.History> {
-                HistoryScreen()
+            composable<BnbDest.Store> {
+                tabSelected = 1
+                StoreScreen()
+            }
+            composable<BnbDest.Order> {
+                tabSelected = 2
+                OrderScreen()
             }
             composable<BnbDest.Profile> {
+                tabSelected = 3
                 ProfileScreen()
             }
         }

@@ -40,8 +40,8 @@ class OrderRepositoryImpl @Inject constructor(
         return datasource.getOrder(orderId).asResultStateDB(formatOrder())
     }
 
-    override fun getOrders(): Flow<ResultState<List<Order>?>> {
-        return datasource.getOrders().asResultStateDB(formatListOrders())
+    override fun getAllOrders(): Flow<ResultState<List<Order>?>> {
+        return datasource.getAllOrders().asResultStateDB(formatListOrders())
     }
 
 }
@@ -55,6 +55,10 @@ private fun Order.toEntity() = OrderEntity(
     quantity = quantity,
     availableInId = availableInId,
     sizeId = sizeId,
+    flavorProfileId = flavorProfileId,
+    grindOptionId = grindOptionId,
+    totalPrice = totalPrice,
+    note = note,
 )
 
 private fun OrderEntity.toOrder() = Order(
@@ -63,6 +67,10 @@ private fun OrderEntity.toOrder() = Order(
     quantity = quantity,
     availableInId = availableInId,
     sizeId = sizeId,
+    flavorProfileId = flavorProfileId,
+    grindOptionId = grindOptionId,
+    totalPrice = totalPrice,
+    note = note,
 )
 
 private fun formatOrder(): OrderEntity?.() -> Order? = { this?.toOrder() }

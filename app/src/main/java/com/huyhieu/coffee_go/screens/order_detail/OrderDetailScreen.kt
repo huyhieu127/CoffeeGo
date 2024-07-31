@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -25,7 +26,6 @@ fun OrderDetailScreen(
     viewModel: OrderDetailVM = hiltViewModel(),
     orderDetailDest: MainDest.OrderDetail = MainDest.OrderDetail(),
     onCloseScreen: () -> Unit = {},
-    onAddToBasketClick: () -> Unit = {},
 ) {
     val coffee = orderDetailDest.getCoffee()
     val orderId = orderDetailDest.orderId
@@ -37,7 +37,10 @@ fun OrderDetailScreen(
         onAction = {
             when (it) {
                 OrderDetailAction.CloseClick -> onCloseScreen()
-                //OrderDetailAction.AddToBasketClick -> onAddToBasketClick()
+                OrderDetailAction.AddToBasketClick -> viewModel.onAddToBasketClick {
+                    onCloseScreen()
+                }
+
                 else -> Unit
             }
             viewModel.onAction(it)
@@ -66,7 +69,8 @@ fun OrderDetailUi(
                     onShareClick = { onAction(OrderDetailAction.ShareClick) }
                 )
                 LazyColumn(
-                    Modifier.weight(1F),
+                    state = rememberLazyListState(),
+                    modifier = Modifier.weight(1F),
                     contentPadding = PaddingValues(bottom = 50.dp),
                 ) {
                     item {

@@ -11,5 +11,5 @@ interface OrderRepository {
     fun deleteAllOrders(): Flow<ResultState<Int>>
 
     fun getOrder(orderId: Int): Flow<ResultState<Order?>>
-    fun getOrders(): Flow<ResultState<List<Order>?>>
+    fun getAllOrders(): Flow<ResultState<List<Order>?>>
 }

@@ -1,10 +1,16 @@
 package com.huyhieu.coffee_go.screens.home
 
+import com.huyhieu.domain.common.ResultState
+import com.huyhieu.domain.entity.Coffee
+import com.huyhieu.domain.entity.Order
 
 data class HomeUiState(
     val toolbar: Toolbar = Toolbar(),
-    val banners: List<Banner> = emptyList(),
-    val coffeeShops: List<CoffeeShop> = emptyList(),
+    val banner: ResultState<List<Coffee>> = ResultState.Loading(),
+    val nearbyShop: ResultState<List<Coffee>> = ResultState.Loading(),
+    val popularMenu: ResultState<List<Coffee>> = ResultState.Loading(),
+    val basket: ResultState<List<Order>?> = ResultState.Loading(),
+    val isHaveBasket: Boolean = false,
 )
 
 data class Toolbar(
@@ -19,13 +25,4 @@ data class Banner(
     val bannerRes: Int = 0,
     val id: String = "",
     val type: String = "",
-)
-
-data class CoffeeShop(
-    val url: String = "",
-    val id: String = "",
-    val name: String = "",
-    val lat: Double = 0.0,
-    val long: Double = 0.0,
-    val rating: Double = 0.0,
 )

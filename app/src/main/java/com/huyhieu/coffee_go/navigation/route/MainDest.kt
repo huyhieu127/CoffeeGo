@@ -18,4 +18,7 @@ sealed class MainDest {
             return checkNotNull(coffeeJson.toData<Coffee>())
         }
     }
+
+    @Serializable
+    object Basket
 }

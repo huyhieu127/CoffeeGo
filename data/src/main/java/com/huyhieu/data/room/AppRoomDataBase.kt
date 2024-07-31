@@ -9,7 +9,7 @@ import com.huyhieu.data.room.entity.OrderEntity
 
 @Database(
     entities = [OrderEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false,
 )
 @TypeConverters(CustomConverters::class)

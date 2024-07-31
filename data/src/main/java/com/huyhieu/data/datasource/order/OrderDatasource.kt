@@ -11,5 +11,5 @@ interface OrderDatasource {
 
     fun getOrder(orderId: Int): Flow<OrderEntity?>
     fun getOrdersByIds(vararg orderId: Int): Flow<List<OrderEntity>?>
-    fun getOrders(): Flow<List<OrderEntity>?>
+    fun getAllOrders(): Flow<List<OrderEntity>?>
 }

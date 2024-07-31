@@ -33,7 +33,7 @@ class OrderDatasourceImpl @Inject constructor(
         return orderDao.getAllOrders()
     }
 
-    override fun getOrders(): Flow<List<OrderEntity>?> {
+    override fun getAllOrders(): Flow<List<OrderEntity>?> {
         return orderDao.getAllOrders()
     }
 }

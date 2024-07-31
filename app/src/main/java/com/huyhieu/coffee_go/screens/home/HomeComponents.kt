@@ -1,10 +1,16 @@
 package com.huyhieu.coffee_go.screens.home
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -24,6 +30,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowForwardIos
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.rounded.AccountCircle
@@ -39,6 +46,7 @@ import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
@@ -48,8 +56,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.huyhieu.coffee_go.R
-import com.huyhieu.coffee_go.ui.common.SpacerHorizontal
 import com.huyhieu.coffee_go.ui.clickableNoneRipple
+import com.huyhieu.coffee_go.ui.common.AnimatedContentFadeIn
+import com.huyhieu.coffee_go.ui.common.AnimatedContentNumberJump
+import com.huyhieu.coffee_go.ui.common.ShimmerEffect
+import com.huyhieu.coffee_go.ui.common.SpacerHorizontal
+import com.huyhieu.coffee_go.ui.common.SpacerVertical
+import com.huyhieu.coffee_go.ui.gradientStyle
 import com.huyhieu.coffee_go.ui.theme.GrayBorder
 import com.huyhieu.coffee_go.ui.theme.Orange
 import com.huyhieu.coffee_go.ui.theme.Primary
@@ -62,7 +75,9 @@ import com.huyhieu.coffee_go.ui.theme.cornerSize
 import com.huyhieu.coffee_go.ui.theme.edgeSize
 import com.huyhieu.coffee_go.ui.theme.utils.type.FontStyle
 import com.huyhieu.coffee_go.ui.theme.utils.type.size
+import com.huyhieu.coffee_go.uitls.localContext
 import com.huyhieu.coffee_go.uitls.screenWidth
+import com.huyhieu.domain.common.ResultState
 import com.huyhieu.domain.entity.Coffee
 import kotlinx.coroutines.delay
 import kotlin.math.absoluteValue
@@ -72,118 +87,133 @@ private const val TAG = "HomeComponents"
 @Preview(showBackground = true)
 @Composable
 private fun BannerUiPreview() {
-    BannerUi(
-        banners = listOf(
-            Banner(bannerRes = R.drawable.coffee_banner),
-            Banner(bannerRes = R.drawable.coffee_banner),
-            Banner(bannerRes = R.drawable.coffee_banner),
-        ),
-    )
+    BannerUi()
 }
 
 @Composable
 fun BannerUi(
-    banners: List<Banner> = emptyList(), onActionBannerClick: (Banner) -> Unit = {}
+    state: HomeUiState = HomeUiState(), onAction: (HomeAction) -> Unit = {}
 ) {
-    if (banners.isNotEmpty()) {
-        val pagerState = rememberPagerState(
-            initialPage = banners.getInitialPage(),
-            pageCount = { Int.MAX_VALUE })
-
-        LaunchedEffect(pagerState.settledPage) {
-            delay(3000)
-            val nextPage = if (pagerState.currentPage == Int.MAX_VALUE * (2 / 3)) {
-                (Int.MAX_VALUE / 3)
-            } else {
-                pagerState.currentPage + 1
-            }
-            pagerState.animateScrollToPage(nextPage)
+    when (val bannerUiState = state.banner) {
+        is ResultState.Error -> {
+            Toast.makeText(localContext, bannerUiState.error, Toast.LENGTH_SHORT).show()
         }
-        Box(
-            modifier = Modifier
-                .padding(vertical = edgeSize)
-                .fillMaxWidth(),
-        ) {
-            HorizontalPager(
-                state = pagerState,
-                modifier = Modifier.align(alignment = Alignment.Center),
-            ) { pageIndex ->
-                banners.getOrNull(pageIndex % banners.size)?.let { banner ->
-                    val pageOffset = pagerState.getOffsetDistanceInPages(pageIndex)
-                    val scaleBg = 7F - (pageOffset.absoluteValue * 5F)
-                    val scaleImage = (pageOffset.absoluteValue * 6F) + 0.9F
-                    val minusRatioHeight = (pageOffset.absoluteValue * 0.7F)
+
+        is ResultState.Loading -> {
+            BannerShimmerUi()
+        }
+
+        is ResultState.Success -> {
+            runCatching {
+                bannerUiState.data.map { coffee ->
+                    Banner(id = coffee.idStr, bannerUrl = coffee.imageUrl)
+                }
+            }.onSuccess { banners ->
+                if (banners.isNotEmpty()) {
+                    val pagerState = rememberPagerState(
+                        initialPage = banners.getInitialPage(),
+                        pageCount = { Int.MAX_VALUE })
+
+                    LaunchedEffect(pagerState.settledPage) {
+                        delay(3000)
+                        val nextPage = if (pagerState.currentPage == Int.MAX_VALUE * (2 / 3)) {
+                            (Int.MAX_VALUE / 3)
+                        } else {
+                            pagerState.currentPage + 1
+                        }
+                        pagerState.animateScrollToPage(nextPage)
+                    }
                     Box(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = edgeSize)
-                            .aspectRatio(4 / 2F)
-                            .clickableNoneRipple {
-                                onActionBannerClick(banner)
-                            }
-                            .graphicsLayer {
-                                rotationY = -(pageOffset * 10F)
-                            }
-                            .aspectRatio(4 / (2F - minusRatioHeight))
-                            .clip(RoundedCornerShape(cornerSize))
-                            .background(PrimaryLight),
+                            .padding(vertical = edgeSize)
+                            .fillMaxWidth(),
                     ) {
-                        AsyncImage(
-                            model = banner.bannerUrl.ifEmpty { R.drawable.coffee_banner },
-                            contentDescription = "",
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .scale(scaleBg)
-                                .blur(
-                                    radiusX = 10.dp,
-                                    radiusY = 10.dp,
-                                    edgeTreatment = BlurredEdgeTreatment(RoundedCornerShape(8.dp))
-                                )
-                        )
-                        AsyncImage(
-                            model = banner.bannerUrl.ifEmpty { R.drawable.coffee_banner },
-                            contentDescription = "",
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .scale(scaleImage)
-                                .graphicsLayer {
-                                    rotationZ = 20F - (40F * pageOffset.absoluteValue)
+                        HorizontalPager(
+                            state = pagerState,
+                            modifier = Modifier.align(alignment = Alignment.Center),
+                        ) { pageIndex ->
+                            banners.getOrNull(pageIndex % banners.size)?.let { banner ->
+                                val pageOffset = pagerState.getOffsetDistanceInPages(pageIndex)
+                                val scaleBg = 7F - (pageOffset.absoluteValue * 5F)
+                                val scaleImage = (pageOffset.absoluteValue * 6F) + 0.9F
+                                val minusRatioHeight = (pageOffset.absoluteValue * 0.7F)
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = edgeSize)
+                                        .aspectRatio(4 / 2F)
+                                        .clickableNoneRipple {
+                                            onAction(HomeAction.BannerClick(banner))
+                                        }
+                                        .graphicsLayer {
+                                            rotationY = -(pageOffset * 10F)
+                                        }
+                                        .aspectRatio(4 / (2F - minusRatioHeight))
+                                        .clip(RoundedCornerShape(cornerSize))
+                                        .background(PrimaryLight),
+                                ) {
+                                    AsyncImage(
+                                        model = banner.bannerUrl.ifEmpty { R.drawable.coffee_banner },
+                                        contentDescription = "",
+                                        contentScale = ContentScale.Crop,
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .scale(scaleBg)
+                                            .blur(
+                                                radiusX = 10.dp,
+                                                radiusY = 10.dp,
+                                                edgeTreatment = BlurredEdgeTreatment(
+                                                    RoundedCornerShape(8.dp)
+                                                )
+                                            )
+                                    )
+                                    AsyncImage(model = banner.bannerUrl.ifEmpty { R.drawable.coffee_banner },
+                                        contentDescription = "",
+                                        contentScale = ContentScale.Crop,
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .scale(scaleImage)
+                                            .graphicsLayer {
+                                                rotationZ = 20F - (40F * pageOffset.absoluteValue)
+                                            })
                                 }
-                        )
-                    }
-                }
-            }
-            if (banners.size > 1) {
-                Row(
-                    Modifier
-                        .align(Alignment.BottomCenter)
-                        .padding(vertical = 4.dp)
-                        //.background(BlackOpacity10, RoundedCornerShape(50))
-                        .padding(3.dp), horizontalArrangement = Arrangement.Center
-                ) {
-                    runCatching {
-                        repeat(banners.size) { iteration ->
-                            val isCurrent = (pagerState.currentPage % banners.size) == iteration
-                            val color = if (isCurrent) Primary else PrimaryLight.alpha(0.5F)
-                            val width = if (isCurrent) 16.dp else 6.dp
-                            Box(
-                                modifier = Modifier
-                                    .padding(horizontal = 4.dp)
-                                    .clip(CircleShape)
-                                    .background(color)
-                                    .width(width)
-                                    .height(6.dp)
-                            )
+                            }
                         }
+                        if (banners.size > 1) {
+                            Row(
+                                Modifier
+                                    .align(Alignment.BottomCenter)
+                                    .padding(vertical = 4.dp)
+                                    //.background(BlackOpacity10, RoundedCornerShape(50))
+                                    .padding(3.dp), horizontalArrangement = Arrangement.Center
+                            ) {
+                                runCatching {
+                                    repeat(banners.size) { iteration ->
+                                        val isCurrent =
+                                            (pagerState.currentPage % banners.size) == iteration
+                                        val color =
+                                            if (isCurrent) Primary else PrimaryLight.alpha(0.5F)
+                                        val width = if (isCurrent) 16.dp else 6.dp
+                                        Box(
+                                            modifier = Modifier
+                                                .padding(horizontal = 4.dp)
+                                                .clip(CircleShape)
+                                                .background(color)
+                                                .width(width)
+                                                .height(6.dp)
+                                        )
+                                    }
+                                }
+                            }
+
+                        }
+
                     }
                 }
-
             }
-
         }
     }
+
 }
 
 private fun List<Banner>.getInitialPage() = runCatching {
@@ -198,76 +228,87 @@ private fun List<Banner>.getInitialPage() = runCatching {
 @Composable
 private fun ToolbarUiPreview() {
     ToolBarUi(
-        toolbar = Toolbar(
-            greetings = "Good morning!", name = "Cristiano Ronaldo", isBadgeVisible = true
+        state = HomeUiState(
+            toolbar = Toolbar(
+                greetings = "Good morning!", name = "Cristiano Ronaldo", isBadgeVisible = true
+            )
         )
     )
 }
 
 @Composable
 fun ToolBarUi(
-    toolbar: Toolbar,
-    actionAvatarClick: () -> Unit = {},
-    actionNotificationClick: () -> Unit = {},
+    state: HomeUiState = HomeUiState(),
+    onAction: (HomeAction) -> Unit = {},
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(actionBarSize)
-            .padding(horizontal = edgeSize),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Icon(
-            Icons.Rounded.AccountCircle,
-            contentDescription = null,
-            modifier = Modifier
-                .size(42.dp)
-                .clickableNoneRipple(onClick = actionAvatarClick),
-        )
-        Column(
-            modifier = Modifier
-                .padding(horizontal = 8.dp)
-                .weight(1f),
+    AnimatedContentFadeIn(targetState = state.toolbar) { toolbar ->
+        ShimmerEffect(
+            isLoading = toolbar.name.isEmpty(),
+            contentLoading = {
+                ToolBarShimmerUi()
+            },
         ) {
-            Text(
-                toolbar.greetings,
-                style = FontStyle.Light.size(fontSize = 14.sp),
-            )
-            Text(
-                toolbar.name,
-                style = FontStyle.Medium.size(18.sp),
-            )
-        }
-
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .size(42.dp)
-                .border(
-                    width = 1.dp, color = GrayBorder, shape = CircleShape
-                )
-                .padding(4.dp)
-                .clickableNoneRipple(onClick = actionNotificationClick),
-        ) {
-            Icon(
-                Icons.Outlined.Notifications,
-                contentDescription = null,
-                Modifier.size(30.dp),
-            )
-            this@Row.AnimatedVisibility(
-                visible = toolbar.isBadgeVisible,
+            Row(
                 modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(top = 6.dp, end = 8.dp)
+                    .fillMaxWidth()
+                    .height(actionBarSize)
+                    .padding(horizontal = edgeSize),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Box(
+                Icon(
+                    Icons.Rounded.AccountCircle,
+                    contentDescription = null,
                     modifier = Modifier
-                        .background(Color.Red, CircleShape)
-                        .size(6.dp)
+                        .size(42.dp)
+                        .clickableNoneRipple(onClick = { onAction(HomeAction.AvatarClick) }),
                 )
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .weight(1f),
+                ) {
+                    Text(
+                        toolbar.greetings,
+                        style = FontStyle.Light.size(fontSize = 14.sp),
+                    )
+                    Text(
+                        toolbar.name,
+                        style = FontStyle.Medium.size(18.sp),
+                    )
+                }
+
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .size(42.dp)
+                        .border(
+                            width = 1.dp, color = GrayBorder, shape = CircleShape
+                        )
+                        .padding(4.dp)
+                        .clickableNoneRipple(onClick = { onAction(HomeAction.NotificationClick) }),
+                ) {
+                    Icon(
+                        Icons.Outlined.Notifications,
+                        contentDescription = null,
+                        Modifier.size(30.dp),
+                    )
+                    this@Row.AnimatedVisibility(
+                        visible = toolbar.isBadgeVisible,
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(top = 6.dp, end = 8.dp)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .background(Color.Red, CircleShape)
+                                .size(6.dp)
+                        )
+                    }
+                }
             }
         }
     }
+
 }
 
 @Preview(showBackground = true)
@@ -320,42 +361,56 @@ fun TitleContainerUi(
 @Composable
 private fun NearbyShopUiPreview() {
     NearbyShopUi(
-        title = "Nearby Shop",
-        nearbyShops = listOf(
-            Coffee(
-                name = "Caffely Astoria Aromas - Ho Chi Minh", region = "Ho Chi Minh"
-            ),
-            Coffee(
-                name = "Caffely Astoria", region = "Ho Chi Minh"
-            ),
-            Coffee(
-                name = "Caffely Astoria Aromas", region = "Ho Chi Minh"
-            ),
+        state = HomeUiState(
+            popularMenu = ResultState.Success(
+                listOf(
+                    Coffee(
+                        name = "Caffely Astoria Aromas - Ho Chi Minh", region = "Ho Chi Minh"
+                    ),
+                    Coffee(
+                        name = "Caffely Astoria", region = "Ho Chi Minh"
+                    ),
+                    Coffee(
+                        name = "Caffely Astoria Aromas", region = "Ho Chi Minh"
+                    ),
+                )
+            )
         ),
-        onActionViewAllClick = {
-
-        },
     )
 }
 
 @Composable
 fun NearbyShopUi(
-    title: String,
-    nearbyShops: List<Coffee>,
-    onActionViewAllClick: () -> Unit,
+    state: HomeUiState = HomeUiState(),
+    onAction: (HomeAction) -> Unit = {},
 ) {
-    Column(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        TitleContainerUi(
-            title = title, onViewAllClick = onActionViewAllClick
-        )
+    when (val nearbyShopUiState = state.nearbyShop) {
+        is ResultState.Error -> {
+            Toast.makeText(
+                localContext, nearbyShopUiState.error, Toast.LENGTH_SHORT
+            ).show()
+        }
 
-        LazyRow(
-            contentPadding = PaddingValues(horizontal = edgeSize - 8.dp),
-        ) {
-            items(nearbyShops) { item ->
-                NearbyShopItemUi(item)
+        is ResultState.Loading -> {
+            BannerShimmerUi()
+        }
+
+        is ResultState.Success -> {
+            val nearbyShops = nearbyShopUiState.data
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                TitleContainerUi(
+                    title = "Nearby Shop",
+                    onViewAllClick = { onAction(HomeAction.NearbyShopViewAllClick) },
+                )
+                LazyRow(
+                    contentPadding = PaddingValues(horizontal = edgeSize - 8.dp),
+                ) {
+                    items(nearbyShops) { item ->
+                        NearbyShopItemUi(item)
+                    }
+                }
             }
         }
     }
@@ -409,12 +464,10 @@ private fun NearbyShopItemUi(coffee: Coffee) {
                     Icons.Rounded.Star,
                     contentDescription = null,
                     tint = Orange,
-                    modifier = Modifier
-                        .size(24.dp)
+                    modifier = Modifier.size(24.dp)
                 )
                 Text(
-                    modifier = Modifier
-                        .padding(start = 2.dp, top = 2.dp, end = 6.dp),
+                    modifier = Modifier.padding(start = 2.dp, top = 2.dp, end = 6.dp),
                     text = "4.8",
                     style = FontStyle.Bold,
                     color = Color.White,
@@ -458,42 +511,60 @@ private fun NearbyShopItemUi(coffee: Coffee) {
 @Composable
 private fun PopularMenuUiPreview() {
     PopularMenuUi(
-        title = "Popular Menu",
-        popularMenuList = listOf(
-            Coffee(
-                name = "Caffely Astoria Aromas - Ho Chi Minh", region = "Ho Chi Minh"
-            ),
-            Coffee(
-                name = "Caffely Astoria", region = "Ho Chi Minh"
-            ),
-            Coffee(
-                name = "Caffely Astoria Aromas", region = "Ho Chi Minh"
-            ),
+        state = HomeUiState(
+            popularMenu = ResultState.Success(
+                listOf(
+                    Coffee(
+                        name = "Caffely Astoria Aromas - Ho Chi Minh", region = "Ho Chi Minh"
+                    ),
+                    Coffee(
+                        name = "Caffely Astoria", region = "Ho Chi Minh"
+                    ),
+                    Coffee(
+                        name = "Caffely Astoria Aromas", region = "Ho Chi Minh"
+                    ),
+                )
+            )
         ),
-        onViewAllClick = {
-
-        },
     )
 }
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PopularMenuUi(
-    title: String,
-    popularMenuList: List<Coffee>,
-    onViewAllClick: () -> Unit,
-    onItemClick: (Coffee) -> Unit = {},
+    state: HomeUiState = HomeUiState(),
+    onAction: (HomeAction) -> Unit = {},
 ) {
-    Column {
-        TitleContainerUi(
-            title = title, onViewAllClick = onViewAllClick
-        )
-        FlowRow(
-            maxItemsInEachRow = 2,
-            modifier = Modifier.padding(horizontal = edgeSize - 8.dp),
-        ) {
-            (popularMenuList).forEach { item ->
-                PopularMenuItemUi(item, onItemClick)
+    when (val popularMenuUiState = state.popularMenu) {
+        is ResultState.Error -> {
+            Toast.makeText(
+                localContext, popularMenuUiState.error, Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        is ResultState.Loading -> {
+            BannerShimmerUi()
+        }
+
+        is ResultState.Success -> {
+            val popularMenuList = popularMenuUiState.data
+            SpacerVertical(12.dp)
+            Column {
+                TitleContainerUi(
+                    title = "Popular Menu",
+                    onViewAllClick = { onAction(HomeAction.PopularMenuViewAllClick) },
+                )
+                FlowRow(
+                    maxItemsInEachRow = 2,
+                    modifier = Modifier.padding(horizontal = edgeSize - 8.dp),
+                ) {
+                    (popularMenuList).forEach { item ->
+                        PopularMenuItemUi(
+                            coffee = item,
+                            onItemClick = { onAction(HomeAction.PopularMenuItemClick(it)) },
+                        )
+                    }
+                }
             }
         }
     }
@@ -503,16 +574,14 @@ fun PopularMenuUi(
 private fun PopularMenuItemUi(
     coffee: Coffee,
     onItemClick: (Coffee) -> Unit = {},
-    ) {
+) {
     val widthImage = (screenWidth - (edgeSize * 3)) / 2 // 3 - Space, 2 - items in row
-    Column(
-        modifier = Modifier
-            .padding(8.dp)
-            .width(widthImage)
-            .clickableNoneRipple {
-                onItemClick.invoke(coffee)
-            }
-    ) {
+    Column(modifier = Modifier
+        .padding(8.dp)
+        .width(widthImage)
+        .clickableNoneRipple {
+            onItemClick.invoke(coffee)
+        }) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -563,4 +632,93 @@ private fun PopularMenuItemUi(
             overflow = TextOverflow.Ellipsis,
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BoxScope.HomeBasketStatusUi(
+    state: HomeUiState = HomeUiState(),
+    onAction: (HomeAction) -> Unit = {},
+) {
+    when (state.basket) {
+        is ResultState.Success -> {
+            val list = state.basket.data ?: emptyList()
+            val count = list.size
+            val totalPrice = list.sumOf { it.totalPrice }
+            AnimatedVisibility(
+                modifier = Modifier.align(Alignment.BottomCenter),
+                visible = list.isNotEmpty(),
+                enter = fadeIn() + slideInVertically(
+                    initialOffsetY = {
+                        it / 2
+                    },
+                ),
+                exit = fadeOut() + slideOutVertically(
+                    targetOffsetY = {
+                        it / 2
+                    },
+                ),
+            ) {
+                Row(
+                    modifier = Modifier
+                        .padding(edgeSize)
+                        .clip(RoundedCornerShape(12.dp))
+                        .shadow(8.dp)
+                        .gradientStyle(RoundedCornerShape(12.dp))
+                        .padding(horizontal = edgeSize, vertical = 10.dp)
+                        .fillMaxWidth()
+                        .clickableNoneRipple {
+                            onAction(HomeAction.CheckBasketClick)
+                        },
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                        modifier = Modifier
+                            .weight(1F)
+                            .padding(end = edgeSize),
+                    ) {
+                        Text(
+                            text = "Total $count item${"(s)".takeIf { count > 1 } ?: ""}",
+                            color = Color.White,
+                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Text(
+                                text = "$",
+                                style = FontStyle.Bold.size(24.sp),
+                                color = Color.White,
+                            )
+                            AnimatedContentNumberJump(targetState = totalPrice) {
+                                Text(
+                                    text = "$it",
+                                    style = FontStyle.SemiBold.size(26.sp),
+                                    color = Color.White,
+                                )
+                            }
+                        }
+                    }
+                    SpacerHorizontal(8.dp)
+                    Text(
+                        text = "Check basket${"(s)".takeIf { count > 1 } ?: ""}",
+                        color = Color.White,
+                        style = FontStyle.Medium
+                    )
+                    SpacerHorizontal(8.dp)
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Rounded.ArrowForwardIos,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(16.dp)
+                    )
+
+                }
+            }
+        }
+
+        else -> Unit
+    }
+
 }

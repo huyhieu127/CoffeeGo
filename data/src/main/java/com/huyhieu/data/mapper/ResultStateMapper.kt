@@ -4,6 +4,7 @@ import com.huyhieu.domain.common.ResultState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -12,7 +13,7 @@ import retrofit2.Response
 
 interface ResultStateMapperImpl : ResultStateDbMapper, ResultStateApiMapper
 
-interface ResultStateApiMapper {
+interface ResultStateDbMapper {
     fun <T> flowResultStateDB(dao: suspend () -> T): Flow<ResultState<T>> {
         return flow {
             emit(ResultState.Loading())
@@ -30,9 +31,9 @@ interface ResultStateApiMapper {
         }
     }
 
-    fun <T, R> Flow<T>.asResultStateDB(onConverter: T.() -> R) = flow<ResultState<R>> {
+    fun <T, R> Flow<T>.asResultStateDB(onConverter: T.() -> R) = channelFlow<ResultState<R>> {
         collectLatest { value ->
-            emit(ResultState.Success(data = onConverter(value)))
+            trySend(ResultState.Success(data = onConverter(value)))
         }
     }.flowOn(Dispatchers.IO).onStart {
         emit(ResultState.Loading())
@@ -41,7 +42,7 @@ interface ResultStateApiMapper {
     }
 }
 
-interface ResultStateDbMapper {
+interface ResultStateApiMapper {
 
     fun <T, R> asResultStateApi(
         onConverter: T.() -> R,

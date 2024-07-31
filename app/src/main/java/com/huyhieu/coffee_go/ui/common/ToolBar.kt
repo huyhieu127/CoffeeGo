@@ -1,6 +1,7 @@
 package com.huyhieu.coffee_go.ui.common
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,7 +24,7 @@ import com.huyhieu.coffee_go.ui.theme.utils.type.size
 
 @Preview
 @Composable
-fun Toolbar(
+fun AppToolbar(
     modifier: Modifier = Modifier,
     iconLeft: ImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
     title: String = "",
@@ -33,7 +34,8 @@ fun Toolbar(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Icon(
             iconLeft,
@@ -45,8 +47,12 @@ fun Toolbar(
                 .padding(10.dp),
         )
         if (title.isNotEmpty()) {
-            Text(text = title, style = FontStyle.SemiBold.size(24.sp))
+            Text(
+                text = title,
+                style = FontStyle.Bold.size(24.sp),
+            )
         }
+        SpacerHorizontal(50.dp)
         //Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = null)
     }
 }

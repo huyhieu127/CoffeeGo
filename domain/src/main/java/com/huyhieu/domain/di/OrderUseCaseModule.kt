@@ -1,5 +1,6 @@
 package com.huyhieu.domain.di
 
+import com.huyhieu.domain.intractor.order.GetAllOrdersUseCase
 import com.huyhieu.domain.intractor.order.InsertOrderUseCase
 import com.huyhieu.domain.repository.OrderRepository
 import dagger.Module
@@ -16,5 +17,10 @@ class OrderUseCaseModule {
     @Provides
     fun provideInsertOrderUseCase(orderRepository: OrderRepository) =
         InsertOrderUseCase(orderRepository)
+
+    @Singleton
+    @Provides
+    fun provideGetAllOrdersUseCase(orderRepository: OrderRepository) =
+        GetAllOrdersUseCase(orderRepository)
 
 }

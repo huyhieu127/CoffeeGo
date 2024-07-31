@@ -40,7 +40,6 @@ fun NavController.navigateToOrderDetail(coffee: Coffee) {
 
 fun NavGraphBuilder.orderDetail(
     onCloseScreen: () -> Unit = {},
-    onAddToBasketClick: () -> Unit = {},
 ) {
     composable<MainDest.OrderDetail>(
         enterTransition = {
@@ -69,7 +68,6 @@ fun NavGraphBuilder.orderDetail(
         OrderDetailScreen(
             orderDetailDest = orderDetailDestination,
             onCloseScreen = onCloseScreen,
-            onAddToBasketClick = onAddToBasketClick,
         )
     }
 }

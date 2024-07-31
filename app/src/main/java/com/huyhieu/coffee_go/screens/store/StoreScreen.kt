@@ -1,4 +1,4 @@
-package com.huyhieu.coffee_go.screens.history
+package com.huyhieu.coffee_go.screens.store
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,8 +10,8 @@ import com.huyhieu.coffee_go.ui.theme.utils.type.FontStyle
 import com.huyhieu.coffee_go.ui.theme.utils.type.size
 
 @Composable
-fun HistoryScreen(modifier: Modifier = Modifier) {
-    Column(modifier = Modifier.fillMaxSize()) {
-        Text(text = "History", style = FontStyle.Medium.size(40.sp))
+fun StoreScreen(modifier: Modifier = Modifier) {
+    Column(modifier = modifier.fillMaxSize()) {
+        Text(text = "Store", style = FontStyle.Medium.size(40.sp))
     }
 }

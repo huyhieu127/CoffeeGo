@@ -1,4 +1,4 @@
-package com.huyhieu.coffee_go.screens.shop
+package com.huyhieu.coffee_go.screens.order
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,8 +10,8 @@ import com.huyhieu.coffee_go.ui.theme.utils.type.FontStyle
 import com.huyhieu.coffee_go.ui.theme.utils.type.size
 
 @Composable
-fun ShopScreen(modifier: Modifier = Modifier) {
-    Column(modifier = Modifier.fillMaxSize()) {
-        Text(text = "Shop", style = FontStyle.Medium.size(40.sp))
+fun OrderScreen(modifier: Modifier = Modifier) {
+    Column(modifier = modifier.fillMaxSize()) {
+        Text(text = "Order", style = FontStyle.Medium.size(40.sp))
     }
 }

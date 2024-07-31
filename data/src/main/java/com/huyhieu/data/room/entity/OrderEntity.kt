@@ -12,4 +12,6 @@ class OrderEntity(
     val sizeId: Int? = null,
     val flavorProfileId: Int? = null,
     val grindOptionId: Int? = null,
+    val totalPrice: Double = 0.0,
+    val note: String = "",
 )

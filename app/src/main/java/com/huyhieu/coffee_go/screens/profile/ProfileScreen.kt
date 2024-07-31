@@ -1,4 +1,4 @@
-package com.huyhieu.coffee_go.screens.history
+package com.huyhieu.coffee_go.screens.order
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,7 +11,7 @@ import com.huyhieu.coffee_go.ui.theme.utils.type.size
 
 @Composable
 fun ProfileScreen(modifier: Modifier = Modifier) {
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = modifier.fillMaxSize()) {
         Text(text = "Profile", style = FontStyle.Medium.size(40.sp))
     }
 }
