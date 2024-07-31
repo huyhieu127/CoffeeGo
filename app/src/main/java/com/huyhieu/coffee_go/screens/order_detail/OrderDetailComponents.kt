@@ -329,10 +329,9 @@ fun OrderDetailTotalPriceUi(
             }
         }
         AppPrimaryButton(
-            onClick = {},
+            onClick = onAddToBasketClick,
             modifier = Modifier
-                .widthIn(180.dp)
-                .clickableNoneRipple(onAddToBasketClick),
+                .widthIn(180.dp),
             text = "Add to Basket",
         )
     }

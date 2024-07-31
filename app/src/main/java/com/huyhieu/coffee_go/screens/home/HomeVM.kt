@@ -2,10 +2,10 @@ package com.huyhieu.coffee_go.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.huyhieu.domain.common.ResponseState
-import com.huyhieu.domain.intractor.GetAllProductsUseCase
-import com.huyhieu.domain.intractor.GetLimitProductsUseCase
-import com.huyhieu.domain.intractor.GetSortProductsUseCase
+import com.huyhieu.domain.common.ResultState
+import com.huyhieu.domain.intractor.coffee.GetAllProductsUseCase
+import com.huyhieu.domain.intractor.coffee.GetLimitProductsUseCase
+import com.huyhieu.domain.intractor.coffee.GetSortProductsUseCase
 import com.huyhieu.domain.utils.TypeSort
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -34,19 +34,19 @@ class HomeVM @Inject constructor(
     val bannerUiState = getLimitProductsUseCase(limit = 5).stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = ResponseState.Loading()
+        initialValue = ResultState.Loading()
     )
 
     val nearbyShopUiState = getSortProductsUseCase(typeSort = TypeSort.DESCENDING).stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = ResponseState.Loading()
+        initialValue = ResultState.Loading()
     )
 
     val popularMenuUiState = getSortProductsUseCase(typeSort = TypeSort.ASCENDING).stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = ResponseState.Loading()
+        initialValue = ResultState.Loading()
     )
 
 

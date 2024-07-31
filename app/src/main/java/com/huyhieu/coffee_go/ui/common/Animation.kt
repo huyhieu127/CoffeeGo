@@ -2,21 +2,22 @@ package com.huyhieu.coffee_go.ui.common
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
-import androidx.compose.animation.with
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
 fun <T> AnimatedContentFadeIn(
-    targetState: T, modifier: Modifier = Modifier,
+    targetState: T,
+    modifier: Modifier = Modifier,
+    animationSpec: FiniteAnimationSpec<Float> = tween(300),
     content: @Composable() AnimatedContentScope.(targetState: T) -> Unit,
 ) {
     AnimatedContent(
@@ -24,8 +25,10 @@ fun <T> AnimatedContentFadeIn(
         modifier = modifier,
         transitionSpec = {
             fadeIn(
-                animationSpec = tween(3000)
-            ) togetherWith fadeOut(animationSpec = tween(3000))
+                animationSpec = animationSpec
+            ) togetherWith fadeOut(
+                animationSpec = animationSpec
+            )
         },
         label = "Animated Content",
         content = content,

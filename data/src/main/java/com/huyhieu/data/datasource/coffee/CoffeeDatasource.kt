@@ -1,4 +1,4 @@
-package com.huyhieu.data.datasource
+package com.huyhieu.data.datasource.coffee
 
 import com.huyhieu.data.retrofit.entity.CoffeeResp
 import com.huyhieu.domain.entity.CoffeeForm

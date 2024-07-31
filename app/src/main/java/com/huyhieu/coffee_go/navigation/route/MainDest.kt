@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 sealed class MainDest {
     @Serializable
-    object Home
+    object Bnb
 
     @Serializable
     data class OrderDetail(
@@ -18,7 +18,4 @@ sealed class MainDest {
             return checkNotNull(coffeeJson.toData<Coffee>())
         }
     }
-
-    @Serializable
-    object Profile
 }

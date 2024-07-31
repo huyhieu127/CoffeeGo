@@ -1,8 +1,9 @@
 package com.huyhieu.domain.entity
 
 class Order(
-    val id: Int = -1,
-    val quantity: Int = 1,
+    val id: Int = 0,
+    val coffeeId: Int = -1,
+    val quantity: Int = -1,
     val availableInId: Int? = null,
     val sizeId: Int? = null,
     val flavorProfileId: Int? = null,

@@ -37,7 +37,7 @@ fun OrderDetailScreen(
         onAction = {
             when (it) {
                 OrderDetailAction.CloseClick -> onCloseScreen()
-                OrderDetailAction.AddToBasketClick -> onAddToBasketClick()
+                //OrderDetailAction.AddToBasketClick -> onAddToBasketClick()
                 else -> Unit
             }
             viewModel.onAction(it)
@@ -136,7 +136,7 @@ fun OrderDetailUi(
                 }
                 OrderDetailTotalPriceUi(
                     totalPrice = state.totalPrice,
-                    onAddToBasketClick = {}
+                    onAddToBasketClick = { onAction(OrderDetailAction.AddToBasketClick) }
                 )
             }
         }

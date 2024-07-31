@@ -1,9 +1,9 @@
 package com.huyhieu.data.repository
 
-import com.huyhieu.data.datasource.CoffeeDatasource
-import com.huyhieu.data.mapper.ApiMapper
+import com.huyhieu.data.datasource.coffee.CoffeeDatasource
+import com.huyhieu.data.mapper.ResultStateMapperImpl
 import com.huyhieu.data.retrofit.entity.CoffeeResp
-import com.huyhieu.domain.common.ResponseState
+import com.huyhieu.domain.common.ResultState
 import com.huyhieu.domain.entity.Coffee
 import com.huyhieu.domain.entity.OrderOptional
 import com.huyhieu.domain.repository.CoffeeRepository
@@ -13,21 +13,21 @@ import javax.inject.Inject
 
 class CoffeeRepositoryImpl @Inject constructor(
     private val coffeeDatasource: CoffeeDatasource
-) : CoffeeRepository {
-    override fun getAllProducts(): Flow<ResponseState<List<Coffee>>> {
-        return ApiMapper.asFlow(toListCoffee()) {
+) : CoffeeRepository, ResultStateMapperImpl {
+    override fun getAllProducts(): Flow<ResultState<List<Coffee>>> {
+        return asResultStateApi(toListCoffee()) {
             coffeeDatasource.getAllProducts()
         }
     }
 
-    override fun getLimitProducts(limit: Int): Flow<ResponseState<List<Coffee>>> {
-        return ApiMapper.asFlow(toListCoffee()) {
+    override fun getLimitProducts(limit: Int): Flow<ResultState<List<Coffee>>> {
+        return asResultStateApi(toListCoffee()) {
             coffeeDatasource.getLimitProducts(limit)
         }
     }
 
-    override fun getSortProducts(sort: TypeSort): Flow<ResponseState<List<Coffee>>> {
-        return ApiMapper.asFlow(toListCoffee()) {
+    override fun getSortProducts(sort: TypeSort): Flow<ResultState<List<Coffee>>> {
+        return asResultStateApi(toListCoffee()) {
             coffeeDatasource.getSortProducts(sort.value)
         }
     }

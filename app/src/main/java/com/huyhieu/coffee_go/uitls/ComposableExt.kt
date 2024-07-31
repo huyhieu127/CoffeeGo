@@ -15,16 +15,16 @@ inline val localInspectionMode: Boolean
     @Composable
     get() = LocalInspectionMode.current
 
-val configuration
+val localConfiguration
     @Composable
     get() = LocalConfiguration.current
 
 val screenHeight
     @Composable
-    get() = configuration.screenHeightDp.dp
+    get() = localConfiguration.screenHeightDp.dp
 val screenWidth
     @Composable
-    get() = configuration.screenWidthDp.dp
+    get() = localConfiguration.screenWidthDp.dp
 
 @Composable
 inline fun <T> T?.takeIfInspectionMode(otherCondition: (T.() -> Boolean) = { true }, onTakeDefault: () -> T): T =
