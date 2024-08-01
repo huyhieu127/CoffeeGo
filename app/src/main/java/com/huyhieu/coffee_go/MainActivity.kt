@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.core.view.WindowCompat.setDecorFitsSystemWindows
 import androidx.navigation.compose.rememberNavController
 import com.huyhieu.coffee_go.navigation.AppNavigation
 import com.huyhieu.coffee_go.ui.theme.CoffeeGoTheme
@@ -18,12 +19,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             CoffeeGoTheme {
-//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-//                    Greeting(
-//                        name = "Android",
-//                        modifier = Modifier.padding(innerPadding)
-//                    )
-//                }
                 AppNavigation(navController)
             }
         }

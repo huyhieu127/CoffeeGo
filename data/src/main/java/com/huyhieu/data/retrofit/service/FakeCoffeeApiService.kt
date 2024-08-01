@@ -1,7 +1,6 @@
 package com.huyhieu.data.retrofit.service
 
 import com.huyhieu.data.retrofit.entity.CoffeeResp
-import com.huyhieu.domain.entity.Coffee
 import com.huyhieu.domain.entity.CoffeeForm
 import retrofit2.Response
 import retrofit2.http.Body
@@ -18,7 +17,7 @@ interface FakeCoffeeApiService {
     suspend fun getAllProducts(): Response<List<CoffeeResp>>
 
     @GET("/api/{id}")
-    suspend fun getProduct(@Path("id") id: String): Response<CoffeeResp>
+    suspend fun getProduct(@Path("id") id: Int): Response<List<CoffeeResp>>
 
     @GET("/api")
     suspend fun getLimitProducts(@Query("limit") limit: Int): Response<List<CoffeeResp>>

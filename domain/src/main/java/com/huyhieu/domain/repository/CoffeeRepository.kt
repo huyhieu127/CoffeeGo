@@ -9,8 +9,8 @@ interface CoffeeRepository {
     fun getAllProducts(): Flow<ResultState<List<Coffee>>>
     fun getLimitProducts(limit: Int): Flow<ResultState<List<Coffee>>>
     fun getSortProducts(sort: TypeSort): Flow<ResultState<List<Coffee>>>
-    /*fun getProduct(id: String): Flow<ResponseState<Coffee>>
-    fun updateProduct(coffeeForm: CoffeeForm): Flow<ResponseState<Coffee>>
-    fun addNewProduct(coffeeForm: CoffeeForm): Flow<ResponseState<Coffee>>
-    fun deleteProduct(id: String): Flow<ResponseState<Coffee>>*/
+    fun getProductById(id: Int): Flow<ResultState<List<Coffee>>>
+    /*fun updateProduct(coffeeForm: CoffeeForm): Flow<ResultState<Coffee>>
+    fun addNewProduct(coffeeForm: CoffeeForm): Flow<ResultState<Coffee>>
+    fun deleteProduct(id: String): Flow<ResultState<Coffee>>*/
 }

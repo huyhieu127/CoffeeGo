@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
@@ -36,19 +37,16 @@ import com.huyhieu.coffee_go.uitls.takeIfInspectionMode
 
 @Preview
 @Composable
-fun AppPrimaryButton(
+fun AppButton(
     modifier: Modifier = Modifier,
     isShowPreview: Boolean = true,
     text: String = "Normal Button".takeIfInspectionMode({ isShowPreview }) { "" },
-    fontSize: TextUnit = 16.sp,
-    shape: Shape = RoundedCornerShape(50),
-    contentPadding: PaddingValues = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
     onClick: (() -> Unit) = {},
     content: @Composable BoxScope.() -> Unit = {
         Text(
             text = text,
-            color = Color.White,
-            style = FontStyle.Regular.size(fontSize),
+            color = TextBlack,
+            style = FontStyle.Medium,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(14.dp)
         )
@@ -56,7 +54,41 @@ fun AppPrimaryButton(
 ) {
     Box(
         modifier = modifier
-            .gradientStyle(shape)
+            .clickable {
+                onClick.invoke()
+            },
+        contentAlignment = Alignment.Center,
+    ) {
+        content()
+    }
+
+}
+
+@Preview
+@Composable
+fun AppPrimaryButton(
+    modifier: Modifier = Modifier,
+    isShowPreview: Boolean = true,
+    text: String = "Normal Button".takeIfInspectionMode({ isShowPreview }) { "" },
+    fontSize: TextUnit = 16.sp,
+    shape: Shape = RoundedCornerShape(50),
+    brush: Brush = BrushStyle.GradientPrimary_Horizontal,
+    shadowColor: Color = Primary,
+    contentPadding: PaddingValues = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+    onClick: (() -> Unit) = {},
+    content: @Composable BoxScope.() -> Unit = {
+        Text(
+            text = text,
+            color = Color.White,
+            style = FontStyle.Medium.size(fontSize),
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(14.dp)
+        )
+    },
+) {
+    Box(
+        modifier = modifier
+            .gradientStyle(shape, brush, shadowColor = shadowColor)
             .clickable {
                 onClick.invoke()
             },
@@ -81,7 +113,7 @@ fun AppLightButton(
         Text(
             text = text,
             color = Primary,
-            style = FontStyle.Regular.copy(
+            style = FontStyle.Medium.copy(
                 fontSize = fontSize,
                 brush = BrushStyle.GradientPrimary_Horizontal
             ),
@@ -137,7 +169,7 @@ fun AppIconButton(
             Text(
                 text = text,
                 color = TextBlack,
-                style = FontStyle.Regular.size(fontSize),
+                style = FontStyle.Medium.size(fontSize),
                 textAlign = TextAlign.Center,
             )
         }

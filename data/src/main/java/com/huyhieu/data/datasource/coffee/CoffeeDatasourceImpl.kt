@@ -15,7 +15,7 @@ class CoffeeDatasourceImpl @Inject constructor(
         return fakeCoffeeApiService.getAllProducts()
     }
 
-    override suspend fun getProduct(id: String): Response<CoffeeResp> {
+    override suspend fun getProduct(id: Int): Response<List<CoffeeResp>> {
         return fakeCoffeeApiService.getProduct(id)
     }
 

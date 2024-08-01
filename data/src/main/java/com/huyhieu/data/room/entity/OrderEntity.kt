@@ -14,4 +14,7 @@ class OrderEntity(
     val grindOptionId: Int? = null,
     val totalPrice: Double = 0.0,
     val note: String = "",
+    val imageUrl: String = "",
+    val name: String = "",
+    val description: String = "",
 )

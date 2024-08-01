@@ -86,13 +86,16 @@ fun Modifier.borderColor(
 )
 
 fun Modifier.gradientStyle(
-    shape: Shape, brush: Brush = BrushStyle.GradientPrimary_Horizontal, elevation: Dp = 12.dp
+    shape: Shape,
+    brush: Brush = BrushStyle.GradientPrimary_Horizontal,
+    elevation: Dp = 8.dp,
+    shadowColor: Color = Primary,
 ) = this
     .shadow(
         elevation = elevation,
         shape = shape,
-        spotColor = Primary,
-        ambientColor = Primary,
+        spotColor = shadowColor,
+        ambientColor = shadowColor,
     )
     .background(
         shape = shape,

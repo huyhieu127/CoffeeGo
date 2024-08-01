@@ -13,35 +13,35 @@ class OrderRepositoryImpl @Inject constructor(
     private val datasource: OrderDatasource
 ) : OrderRepository, ResultStateMapperImpl {
     override fun insertOrder(order: Order): Flow<ResultState<Long>> {
-        return flowResultStateDB {
+        return resultStateDB {
             datasource.insertOrder(order.toEntity())
         }
     }
 
     override fun updateOrder(order: Order): Flow<ResultState<Int>> {
-        return flowResultStateDB {
+        return resultStateDB {
             datasource.updateOrder(order.toEntity())
         }
     }
 
     override fun deleteByOrderId(vararg orderId: Int): Flow<ResultState<Int>> {
-        return flowResultStateDB {
+        return resultStateDB {
             datasource.deleteByOrderIds(*orderId)
         }
     }
 
     override fun deleteAllOrders(): Flow<ResultState<Int>> {
-        return flowResultStateDB {
+        return resultStateDB {
             datasource.deleteAllOrders()
         }
     }
 
     override fun getOrder(orderId: Int): Flow<ResultState<Order?>> {
-        return datasource.getOrder(orderId).asResultStateDB(formatOrder())
+        return datasource.getOrder(orderId).resultStateDB(formatOrder())
     }
 
     override fun getAllOrders(): Flow<ResultState<List<Order>?>> {
-        return datasource.getAllOrders().asResultStateDB(formatListOrders())
+        return datasource.getAllOrders().resultStateDB(formatListOrders())
     }
 
 }
@@ -59,6 +59,9 @@ private fun Order.toEntity() = OrderEntity(
     grindOptionId = grindOptionId,
     totalPrice = totalPrice,
     note = note,
+    imageUrl = imageUrl,
+    name = name,
+    description = description,
 )
 
 private fun OrderEntity.toOrder() = Order(
@@ -71,6 +74,9 @@ private fun OrderEntity.toOrder() = Order(
     grindOptionId = grindOptionId,
     totalPrice = totalPrice,
     note = note,
+    imageUrl = imageUrl,
+    name = name,
+    description = description,
 )
 
 private fun formatOrder(): OrderEntity?.() -> Order? = { this?.toOrder() }

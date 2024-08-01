@@ -5,3 +5,4 @@ import androidx.compose.ui.unit.dp
 val actionBarSize = 54.dp
 val edgeSize = 16.dp
 val cornerSize = 16.dp
+val shadowSize = 4.dp

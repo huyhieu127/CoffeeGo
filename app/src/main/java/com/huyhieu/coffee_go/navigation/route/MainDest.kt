@@ -1,6 +1,6 @@
 package com.huyhieu.coffee_go.navigation.route
 
-import com.huyhieu.domain.entity.Coffee
+import com.huyhieu.domain.entity.Order
 import com.huyhieu.libs.toData
 import kotlinx.serialization.Serializable
 
@@ -10,13 +10,10 @@ sealed class MainDest {
 
     @Serializable
     data class OrderDetail(
-        val coffeeId: String = "",
-        val coffeeJson: String = "",
-        val orderId: Int = -1,
+        val coffeeId: Int = -1,
+        val order: String? = null,
     ) {
-        fun getCoffee(): Coffee {
-            return checkNotNull(coffeeJson.toData<Coffee>())
-        }
+        fun getOrder() = order.toData<Order>()
     }
 
     @Serializable

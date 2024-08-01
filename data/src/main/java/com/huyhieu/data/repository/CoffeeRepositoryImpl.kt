@@ -15,20 +15,26 @@ class CoffeeRepositoryImpl @Inject constructor(
     private val coffeeDatasource: CoffeeDatasource
 ) : CoffeeRepository, ResultStateMapperImpl {
     override fun getAllProducts(): Flow<ResultState<List<Coffee>>> {
-        return asResultStateApi(toListCoffee()) {
+        return resultStateApi(toListCoffee()) {
             coffeeDatasource.getAllProducts()
         }
     }
 
     override fun getLimitProducts(limit: Int): Flow<ResultState<List<Coffee>>> {
-        return asResultStateApi(toListCoffee()) {
+        return resultStateApi(toListCoffee()) {
             coffeeDatasource.getLimitProducts(limit)
         }
     }
 
     override fun getSortProducts(sort: TypeSort): Flow<ResultState<List<Coffee>>> {
-        return asResultStateApi(toListCoffee()) {
+        return resultStateApi(toListCoffee()) {
             coffeeDatasource.getSortProducts(sort.value)
+        }
+    }
+
+    override fun getProductById(id: Int): Flow<ResultState<List<Coffee>>> {
+        return resultStateApi(toListCoffee()) {
+            coffeeDatasource.getProduct(id)
         }
     }
 }

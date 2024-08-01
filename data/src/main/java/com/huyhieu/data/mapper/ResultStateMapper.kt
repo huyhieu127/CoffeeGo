@@ -14,7 +14,7 @@ import retrofit2.Response
 interface ResultStateMapperImpl : ResultStateDbMapper, ResultStateApiMapper
 
 interface ResultStateDbMapper {
-    fun <T> flowResultStateDB(dao: suspend () -> T): Flow<ResultState<T>> {
+    fun <T> resultStateDB(dao: suspend () -> T): Flow<ResultState<T>> {
         return flow {
             emit(ResultState.Loading())
             runCatching {
@@ -31,7 +31,7 @@ interface ResultStateDbMapper {
         }
     }
 
-    fun <T, R> Flow<T>.asResultStateDB(onConverter: T.() -> R) = channelFlow<ResultState<R>> {
+    fun <T, R> Flow<T>.resultStateDB(onConverter: T.() -> R) = channelFlow<ResultState<R>> {
         collectLatest { value ->
             trySend(ResultState.Success(data = onConverter(value)))
         }
@@ -44,7 +44,7 @@ interface ResultStateDbMapper {
 
 interface ResultStateApiMapper {
 
-    fun <T, R> asResultStateApi(
+    fun <T, R> resultStateApi(
         onConverter: T.() -> R,
         api: suspend () -> Response<T>
     ) = flow {
@@ -62,7 +62,7 @@ interface ResultStateApiMapper {
     }
 
 
-    fun <T> asResultStateApi(
+    fun <T> resultStateApi(
         api: suspend () -> Response<T>//, onEach: ((ResponseState<T>) -> Unit) = { }
     ) = flow<ResultState<T>> {
         val response = api.invoke()
