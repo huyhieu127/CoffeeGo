@@ -41,13 +41,16 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.BlurredEdgeTreatment
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
@@ -66,6 +69,7 @@ import com.huyhieu.coffee_go.ui.common.SpacerHorizontal
 import com.huyhieu.coffee_go.ui.common.SpacerVertical
 import com.huyhieu.coffee_go.ui.gradientStyle
 import com.huyhieu.coffee_go.ui.theme.GrayBorderIcon
+import com.huyhieu.coffee_go.ui.theme.GrayIcon
 import com.huyhieu.coffee_go.ui.theme.Orange
 import com.huyhieu.coffee_go.ui.theme.Primary
 import com.huyhieu.coffee_go.ui.theme.PrimaryLight
@@ -75,9 +79,9 @@ import com.huyhieu.coffee_go.ui.theme.actionBarSize
 import com.huyhieu.coffee_go.ui.theme.alpha
 import com.huyhieu.coffee_go.ui.theme.cornerSize
 import com.huyhieu.coffee_go.ui.theme.edgeSize
-import com.huyhieu.coffee_go.ui.theme.shadowSize
 import com.huyhieu.coffee_go.ui.theme.utils.type.FontStyle
 import com.huyhieu.coffee_go.ui.theme.utils.type.size
+import com.huyhieu.coffee_go.uitls.imageRequestUrl
 import com.huyhieu.coffee_go.uitls.localContext
 import com.huyhieu.coffee_go.uitls.screenWidth
 import com.huyhieu.domain.common.ResultState
@@ -138,10 +142,18 @@ fun BannerUi(
                         ) { pageIndex ->
                             banners.getOrNull(pageIndex % banners.size)?.let { banner ->
                                 val pageOffset = pagerState.getOffsetDistanceInPages(pageIndex)
-                                val scaleBg = 7F - (pageOffset.absoluteValue * 5F)
                                 val scaleImage = (pageOffset.absoluteValue * 6F) + 0.9F
                                 val minusRatioHeight = (pageOffset.absoluteValue * 0.7F)
-                                Box(
+
+                                var colorsPalette by remember {
+                                    mutableStateOf(listOf(PrimaryLight, PrimaryLight))
+                                }
+                                AsyncImage(
+                                    model = imageRequestUrl(url = banner.bannerUrl) {
+                                        colorsPalette = it
+                                    }.build(),
+                                    contentDescription = "",
+                                    contentScale = ContentScale.Crop,
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(horizontal = edgeSize)
@@ -154,33 +166,16 @@ fun BannerUi(
                                         }
                                         .aspectRatio(4 / (2F - minusRatioHeight))
                                         .clip(RoundedCornerShape(cornerSize))
-                                        .background(PrimaryLight),
-                                ) {
-                                    AsyncImage(
-                                        model = banner.bannerUrl.ifEmpty { R.drawable.coffee_banner },
-                                        contentDescription = "",
-                                        contentScale = ContentScale.Crop,
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .scale(scaleBg)
-                                            .blur(
-                                                radiusX = 10.dp,
-                                                radiusY = 10.dp,
-                                                edgeTreatment = BlurredEdgeTreatment(
-                                                    RoundedCornerShape(8.dp)
-                                                )
-                                            )
-                                    )
-                                    AsyncImage(model = banner.bannerUrl.ifEmpty { R.drawable.coffee_banner },
-                                        contentDescription = "",
-                                        contentScale = ContentScale.Crop,
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .scale(scaleImage)
-                                            .graphicsLayer {
-                                                rotationZ = 20F - (40F * pageOffset.absoluteValue)
-                                            })
-                                }
+                                        //.background(bgColor)
+                                        .gradientStyle(
+                                            RoundedCornerShape(size = cornerSize),
+                                            brush = Brush.linearGradient(colors = colorsPalette)
+                                        )
+                                        .scale(scaleImage)
+                                        .graphicsLayer {
+                                            rotationZ = 20F - (40F * pageOffset.absoluteValue)
+                                        },
+                                )
                             }
                         }
                         if (banners.size > 1) {
@@ -249,7 +244,7 @@ fun ToolBarUi(
         targetState = state.toolbar,
         modifier = Modifier
             .fillMaxWidth()
-            .shadow(shadowSize)
+            //.shadow(shadowSize)
             .background(Color.White)
             .statusBarsPadding()
     ) { toolbar ->
@@ -272,6 +267,7 @@ fun ToolBarUi(
                     modifier = Modifier
                         .size(42.dp)
                         .clickableNoneRipple(onClick = { onAction(HomeAction.AvatarClick) }),
+                    tint = GrayIcon,
                 )
                 Column(
                     modifier = Modifier
@@ -303,6 +299,7 @@ fun ToolBarUi(
                         Icons.Outlined.Notifications,
                         contentDescription = null,
                         Modifier.size(30.dp),
+                        tint = GrayIcon
                     )
                     this@Row.AnimatedVisibility(
                         visible = toolbar.isBadgeVisible,
@@ -430,6 +427,9 @@ fun NearbyShopUi(
 
 @Composable
 private fun NearbyShopItemUi(coffee: Coffee) {
+    var colorsPalette by remember {
+        mutableStateOf(listOf(PrimaryLight, PrimaryLight))
+    }
     Column(
         modifier = Modifier
             .padding(8.dp)
@@ -440,27 +440,19 @@ private fun NearbyShopItemUi(coffee: Coffee) {
                 .fillMaxWidth()
                 .aspectRatio(1F)
                 .clip(RoundedCornerShape(cornerSize))
-                .background(PrimaryLight)
         ) {
             AsyncImage(
-                model = coffee.imageUrl.ifEmpty { R.drawable.coffee_banner },
-                contentDescription = "",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .scale(7F)
-                    .blur(
-                        radiusX = 10.dp,
-                        radiusY = 10.dp,
-                        edgeTreatment = BlurredEdgeTreatment(RoundedCornerShape(8.dp))
-                    )
-            )
-            AsyncImage(
-                model = coffee.imageUrl,
+                model = imageRequestUrl(url = coffee.imageUrl) {
+                    colorsPalette = it
+                }.build(),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxSize()
+                    .gradientStyle(
+                        RoundedCornerShape(size = cornerSize),
+                        brush = Brush.linearGradient(colors = colorsPalette)
+                    )
                     .scale(2.4F),
             )
 
@@ -587,6 +579,9 @@ private fun PopularMenuItemUi(
     coffee: Coffee,
     onItemClick: (Coffee) -> Unit = {},
 ) {
+    var colorsPalette by remember {
+        mutableStateOf(listOf(PrimaryLight, PrimaryLight))
+    }
     val widthImage = (screenWidth - (edgeSize * 3)) / 2 // 3 - Space, 2 - items in row
     Column(modifier = Modifier
         .padding(8.dp)
@@ -594,35 +589,22 @@ private fun PopularMenuItemUi(
         .clickableNoneRipple {
             onItemClick.invoke(coffee)
         }) {
-        Box(
+        AsyncImage(
+            model = imageRequestUrl(url = coffee.imageUrl) {
+                colorsPalette = it
+            }.build(),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1F)
                 .clip(RoundedCornerShape(cornerSize))
-                .background(PrimaryLight)
-        ) {
-            AsyncImage(
-                model = coffee.imageUrl.ifEmpty { R.drawable.coffee_banner },
-                contentDescription = "",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .scale(7F)
-                    .blur(
-                        radiusX = 10.dp,
-                        radiusY = 10.dp,
-                        edgeTreatment = BlurredEdgeTreatment(RoundedCornerShape(8.dp))
-                    )
-            )
-            AsyncImage(
-                model = coffee.imageUrl,
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .scale(1.45F),
-            )
-        }
+                .gradientStyle(
+                    RoundedCornerShape(size = cornerSize),
+                    brush = Brush.linearGradient(colors = colorsPalette)
+                )
+                .scale(1.45F),
+        )
 
         Text(
             modifier = Modifier

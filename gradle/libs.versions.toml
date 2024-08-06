@@ -25,6 +25,7 @@ foundation = "1.7.0-beta06"
 googleServices = "4.4.2"
 firebaseCrashlytics = "3.0.2"
 
+paletteKtx = "1.0.0"
 room = "2.6.1"
 
 hilt = "2.50"
@@ -73,6 +74,7 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 androidx-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "foundation" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material-icons-extend = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtend" }
+androidx-palette-ktx = { module = "androidx.palette:palette-ktx", version.ref = "paletteKtx" }
 
 #Jetpacks
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }

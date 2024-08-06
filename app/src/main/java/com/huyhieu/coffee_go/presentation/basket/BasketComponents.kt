@@ -10,7 +10,6 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -32,9 +31,14 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
@@ -49,14 +53,17 @@ import com.huyhieu.coffee_go.ui.common.AppCheckbox
 import com.huyhieu.coffee_go.ui.common.AppPrimaryButton
 import com.huyhieu.coffee_go.ui.common.SpacerHorizontal
 import com.huyhieu.coffee_go.ui.common.SpacerVertical
-import com.huyhieu.coffee_go.ui.theme.GrayBg
+import com.huyhieu.coffee_go.ui.gradientStyle
+import com.huyhieu.coffee_go.ui.theme.PrimaryLight
 import com.huyhieu.coffee_go.ui.theme.PrimaryRed
 import com.huyhieu.coffee_go.ui.theme.TextDescription
+import com.huyhieu.coffee_go.ui.theme.cornerSize
 import com.huyhieu.coffee_go.ui.theme.edgeSize
 import com.huyhieu.coffee_go.ui.theme.utils.brush.BrushStyle
 import com.huyhieu.coffee_go.ui.theme.utils.type.FontStyle
 import com.huyhieu.coffee_go.ui.theme.utils.type.size
 import com.huyhieu.coffee_go.ui.tintGradientStyle
+import com.huyhieu.coffee_go.uitls.imageRequestUrl
 import com.huyhieu.domain.entity.Order
 import com.huyhieu.libs.formatDollar
 
@@ -168,6 +175,9 @@ fun BasketItemUi(
     onItemClick: (order: Order) -> Unit,
     onDelete: (order: Order) -> Unit,
 ) {
+    var colorsPalette by remember {
+        mutableStateOf(listOf(PrimaryLight, PrimaryLight))
+    }
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(
@@ -190,15 +200,21 @@ fun BasketItemUi(
             Box(
                 modifier = Modifier
                     .size(70.dp)
-                    .clip(shape = RoundedCornerShape(12.dp))
-                    .background(GrayBg),
+                    .clip(shape = RoundedCornerShape(12.dp)),
                 contentAlignment = Alignment.BottomStart,
             ) {
                 AsyncImage(
-                    model = item.imageUrl,
+                    model = imageRequestUrl(url = item.imageUrl) {
+                        colorsPalette = it
+                    }.build(),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .gradientStyle(
+                            RoundedCornerShape(size = cornerSize),
+                            brush = Brush.linearGradient(colors = colorsPalette)
+                        ),
                 )
                 androidx.compose.animation.AnimatedVisibility(
                     modifier = Modifier.padding(6.dp),

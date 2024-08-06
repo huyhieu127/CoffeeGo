@@ -19,6 +19,7 @@ val GrayBorderIcon = Color(0xFFEFEFEF)
 val GrayBg = Color(0xFFECECEC)
 val Orange = Color(0xFFFFB74D)
 val PrimaryRed = Color(0xFFE53935)
+val GrayIcon = Color(0xFF494949)
 
 /**
  * Define colors

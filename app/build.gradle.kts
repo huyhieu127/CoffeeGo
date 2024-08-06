@@ -88,6 +88,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.foundation)
     implementation(libs.material.icons.extend)
+    implementation(libs.androidx.palette.ktx)
 
     implementation(libs.firebase.crashlytics)
 

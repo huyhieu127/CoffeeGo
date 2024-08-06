@@ -10,7 +10,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -43,13 +42,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.BlurredEdgeTreatment
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -67,6 +68,7 @@ import com.huyhieu.coffee_go.ui.common.AppHorizontalDivider
 import com.huyhieu.coffee_go.ui.common.AppPrimaryButton
 import com.huyhieu.coffee_go.ui.common.SpacerHorizontal
 import com.huyhieu.coffee_go.ui.common.SpacerVertical
+import com.huyhieu.coffee_go.ui.gradientStyle
 import com.huyhieu.coffee_go.ui.theme.Primary
 import com.huyhieu.coffee_go.ui.theme.PrimaryLight
 import com.huyhieu.coffee_go.ui.theme.PrimaryRed
@@ -80,6 +82,7 @@ import com.huyhieu.coffee_go.ui.theme.utils.type.FontStyle
 import com.huyhieu.coffee_go.ui.theme.utils.type.size
 import com.huyhieu.coffee_go.ui.tintGradientStyle
 import com.huyhieu.coffee_go.ui.tintSelectStyle
+import com.huyhieu.coffee_go.uitls.imageRequestUrl
 import com.huyhieu.coffee_go.uitls.screenWidth
 import com.huyhieu.domain.entity.OrderOption
 import com.huyhieu.domain.entity.OrderOptional
@@ -393,39 +396,30 @@ fun OrderDetailHeaderUi(
     name: String,
     description: String,
 ) {
+    var colorsPalette by remember {
+        mutableStateOf(listOf(PrimaryLight, PrimaryLight))
+    }
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(edgeSize),
     ) {
-        Box(
+        AsyncImage(
+            model = imageRequestUrl(url = imageUrl) {
+                colorsPalette = it
+            }.build(),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .aspectRatio(1F)
                 .clip(RoundedCornerShape(cornerSize))
-                .background(PrimaryLight),
-        ) {
-            AsyncImage(
-                model = imageUrl,
-                contentDescription = "",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .scale(7F)
-                    .blur(
-                        radiusX = 10.dp,
-                        radiusY = 10.dp,
-                        edgeTreatment = BlurredEdgeTreatment(RoundedCornerShape(8.dp))
-                    )
-            )
-            AsyncImage(
-                model = imageUrl,
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .scale(1.2F)
-                    .fillMaxSize()
-            )
-        }
+                .gradientStyle(
+                    RoundedCornerShape(size = cornerSize),
+                    brush = Brush.linearGradient(colors = colorsPalette)
+                )
+                .scale(1.2F)
+                .fillMaxSize()
+        )
         SpacerVertical(16.dp)
         Text(text = name, style = FontStyle.Bold.size(24.sp))
         SpacerVertical(12.dp)

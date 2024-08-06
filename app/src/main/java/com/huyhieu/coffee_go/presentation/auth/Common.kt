@@ -34,7 +34,7 @@ import com.huyhieu.coffee_go.ui.theme.utils.brush.BrushStyle
 import com.huyhieu.coffee_go.ui.theme.utils.type.FontStyle
 import com.huyhieu.coffee_go.ui.theme.utils.type.size
 import com.huyhieu.coffee_go.ui.theme.utils.type.textAlign
-import com.huyhieu.listentogether.ui.components.LogoApp
+import com.huyhieu.coffee_go.ui.common.AppLogo
 
 @Preview
 @Composable
@@ -43,8 +43,8 @@ fun AuthHeader(modifier: Modifier = Modifier, text: String = "Text") {
         modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally
     ) {
         SpacerVertical()
-        LogoApp(
-            modifier = Modifier.size(120.dp), padding = 20.dp
+        AppLogo(
+            modifier = Modifier.size(120.dp)
         )
         SpacerVertical()
         Text(
